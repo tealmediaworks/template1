@@ -1691,5 +1691,50 @@ document.getElementById('rf').addEventListener('submit',function(e){
   document.getElementById('rsvp-ok').style.display='block';
 });
 </script>
+   <script>
+const scriptURL =
+'https://script.google.com/macros/u/1/s/AKfycbx8DhA9PW8_iY1X2_slqr6Hft-EptDKf8Eq-Z1kj_5zSlU8yF77353PKOrKoI1MlWzo/exec';
+
+document
+.getElementById('rf')
+.addEventListener('submit', async function(e){
+
+  e.preventDefault();
+
+  const data = {
+    name: document.getElementById('rn').value,
+    guests: document.getElementById('rg').value,
+    attendance:
+      document.querySelector(
+        'input[name="att"]:checked'
+      )?.value || '',
+    flight:
+      document.getElementById('rfl').value,
+    accommodation:
+      document.getElementById('rac').value,
+    dietary:
+      document.getElementById('rd').value,
+    message:
+      document.getElementById('rm').value
+  };
+
+  try {
+
+    await fetch(scriptURL,{
+      method:'POST',
+      body:JSON.stringify(data)
+    });
+
+    document.getElementById('rf').style.display='none';
+    document.getElementById('rsvp-ok').style.display='block';
+
+  } catch(error) {
+
+    alert('Unable to submit RSVP. Please try again.');
+
+  }
+
+});
+</script>
 </body>
 </html>
