@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sonia ♡ Rahul</title>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;500;700&family=Sacramento&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden}
+body{background:#050205;font-family:'Cormorant Garamond',serif;color:#fdf6ec}
+
+/* ═══════════════════════════════
+   CANVAS & GLOBAL
+═══════════════════════════════ */
+#bg-canvas{position:fixed;inset:0;z-index:0}
+#particle-canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
+
+/* ═══════════════════════════════
+   CHAPTERS SYSTEM
+═══════════════════════════════ */
+#chapters{
+  position:fixed;inset:0;z-index:10;
+  overflow:hidden;
+}
+.chapter{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity 0s;
+}
+.chapter.active{opacity:1;pointer-events:all}
+.chapter.fade-in{animation:chFadeIn 1.2s ease forwards}
+.chapter.fade-out{animation:chFadeOut 0.8s ease forwards}
+@keyframes chFadeIn{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
+@keyframes chFadeOut{from{opacity:1}to{opacity:0;transform:scale(1.03)}}
+
+/* ═══════════════════════════════
+   CHAPTER 0 — OPENING
+═══════════════════════════════ */
+#ch0{flex-direction:column;cursor:pointer}
+.om-orbit{
+  position:relative;width:220px;height:220px;margin-bottom:32px;
+}
+.om-ring{
+  position:absolute;inset:0;border-radius:50%;
+  border:1px solid rgba(212,160,23,0.3);
+  animation:spinRing 20s linear infinite;
+}
+.om-ring:nth-child(2){inset:14px;border-color:rgba(200,90,30,0.25);animation-duration:15s;animation-direction:reverse}
+.om-ring:nth-child(3){inset:26px;border-color:rgba(139,26,58,0.3);animation-duration:30s}
+.om-dot{
+  position:absolute;width:8px;height:8px;border-radius:50%;
+  background:var(--g,#d4a017);top:50%;left:50%;
+  transform-origin:-76px 0;
+  animation:spinDot calc(var(--d,20) * 1s) linear infinite;
+}
+@keyframes spinDot{from{transform:rotate(0deg) translateX(-76px)}to{transform:rotate(360deg) translateX(-76px)}}
+@keyframes spinRing{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.om-core{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:80px;animation:breathe 4s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.ch0-title{
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:10px;
+  color:rgba(212,160,23,0.7);text-transform:uppercase;margin-bottom:14px;
+}
+.ch0-tap{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:17px;color:rgba(212,160,23,0.5);
+  animation:tapBlink 2.5s ease-in-out infinite;
+}
+@keyframes tapBlink{0%,100%{opacity:0.3}60%{opacity:1}}
+.ch0-names{
+  font-family:'Italiana',serif;font-size:26px;
+  letter-spacing:4px;color:rgba(253,246,236,0.3);
+  margin-bottom:8px;
+}
+
+/* ═══════════════════════════════
+   CHAPTER 1 — GANESH
+═══════════════════════════════ */
+#ch1{flex-direction:column;text-align:center}
+.ganesh-scene{
+  position:relative;width:100%;max-width:700px;
+  display:flex;flex-direction:column;align-items:center;
+  padding:40px 20px;
+}
+/* Lotus floor */
+.lotus-floor{
+  position:absolute;bottom:0;left:0;right:0;
+  height:180px;pointer-events:none;
+  display:flex;align-items:flex-end;justify-content:center;
+}
+/* Deity glow */
+.deity-glow{
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,200,50,0.25) 0%,transparent 70%);
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:deityGlow 3s ease-in-out infinite;
+}
+@keyframes deityGlow{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.2);filter:blur(2px)}}
+.ganesh-big{font-size:100px;position:relative;z-index:2;animation:floatDeity 5s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(255,180,50,0.4))}
+@keyframes floatDeity{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.ganesh-mantra{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:22px;color:rgba(253,246,236,0.9);
+  line-height:1.9;margin-top:24px;text-shadow:0 2px 20px rgba(0,0,0,0.6);
+}
+.ganesh-sub{font-size:14px;color:rgba(212,160,23,0.8);letter-spacing:4px;margin-top:8px}
+
+/* ═══════════════════════════════
+   CHAPTER 2 — BRIDE
+═══════════════════════════════ */
+#ch2{flex-direction:row;align-items:stretch}
+.split-left,.split-right{
+  flex:1;display:flex;flex-direction:column;
+  justify-content:center;padding:60px 50px;position:relative;
+}
+.split-left{
+  background:linear-gradient(135deg,#1a0510 0%,#3a0818 60%,#1a0510 100%);
+  border-right:1px solid rgba(212,160,23,0.15);
+}
+.split-right{
+  background:linear-gradient(225deg,#050d10 0%,#0a2820 60%,#050d10 100%);
+}
+/* Illustrated background elements */
+.bg-paisley{
+  position:absolute;opacity:0.04;pointer-events:none;
+  font-size:300px;line-height:1;
+}
+.name-mega{
+  font-family:'Italiana',serif;
+  font-size:clamp(48px,8vw,86px);
+  line-height:1;letter-spacing:2px;
+  position:relative;z-index:2;
+}
+.name-mega.bride-col{color:#f0a0b0;text-shadow:0 0 60px rgba(192,57,90,0.4)}
+.name-mega.groom-col{color:#80d0c0;text-shadow:0 0 60px rgba(13,92,82,0.5)}
+.person-label{
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:7px;
+  color:rgba(212,160,23,0.6);text-transform:uppercase;
+  margin-bottom:16px;position:relative;z-index:2;
+}
+.family-text{
+  font-size:15px;line-height:1.9;margin-top:18px;
+  color:rgba(253,246,236,0.65);font-style:italic;
+  position:relative;z-index:2;
+}
+.family-label{
+  font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;
+  color:rgba(212,160,23,0.5);text-transform:uppercase;
+  margin-top:12px;display:block;position:relative;z-index:2;
+}
+/* Center union column */
+.union-col{
+  width:100px;flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;z-index:5;background:#0e0608;
+  border-left:1px solid rgba(212,160,23,0.12);
+  border-right:1px solid rgba(212,160,23,0.12);
+}
+.union-col::before{
+  content:'';position:absolute;top:0;bottom:0;left:50%;
+  width:1px;background:linear-gradient(180deg,transparent,rgba(212,160,23,0.3) 20%,rgba(212,160,23,0.3) 80%,transparent);
+}
+.weds-vertical{
+  font-family:'Sacramento',cursive;font-size:28px;
+  color:rgba(212,160,23,0.9);writing-mode:vertical-rl;
+  text-orientation:mixed;letter-spacing:6px;
+  position:relative;z-index:2;
+}
+.union-gem{font-size:28px;margin:16px 0;position:relative;z-index:2;animation:gemPulse 3s ease-in-out infinite}
+@keyframes gemPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+
+/* ═══════════════════════════════
+   CHAPTER 3 — DATES (HERO)
+═══════════════════════════════ */
+#ch3{flex-direction:column;text-align:center;justify-content:center;align-items:center}
+.date-hero{position:relative;padding:80px 60px;max-width:800px;width:100%}
+/* Arch SVG background */
+.arch-bg{
+  position:absolute;inset:0;pointer-events:none;
+}
+.date-eyebrow{
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:9px;
+  color:rgba(212,160,23,0.6);text-transform:uppercase;margin-bottom:20px;
+}
+.date-giant{
+  font-family:'Italiana',serif;
+  font-size:clamp(60px,14vw,140px);
+  line-height:0.9;letter-spacing:-2px;
+  background:linear-gradient(180deg,#fdf6ec 0%,#d4a017 40%,#8b4a00 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  position:relative;z-index:2;
+}
+.date-year{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(18px,4vw,34px);letter-spacing:12px;
+  color:rgba(253,246,236,0.5);margin-top:4px;position:relative;z-index:2;
+}
+.date-city{
+  font-family:'Cinzel',serif;font-size:12px;letter-spacing:8px;
+  color:rgba(212,160,23,0.8);text-transform:uppercase;
+  margin-top:20px;position:relative;z-index:2;
+}
+.date-city::before,.date-city::after{content:'✦';margin:0 14px;opacity:0.5}
+
+/* ═══════════════════════════════
+   CHAPTER 4 — CEREMONIES (HORIZONTAL CAROUSEL)
+═══════════════════════════════ */
+#ch4{flex-direction:column;overflow:hidden;position:relative}
+.cer-header{
+  text-align:center;padding:40px 40px 20px;flex-shrink:0;
+}
+.cer-title{
+  font-family:'Italiana',serif;font-size:42px;color:rgba(253,246,236,0.9);
+}
+.cer-sub{font-size:14px;color:rgba(212,160,23,0.6);letter-spacing:5px;margin-top:6px;font-family:'Cinzel',serif;text-transform:uppercase}
+.cer-track-wrap{
+  flex:1;position:relative;
+  overflow:hidden;
+  width:100%;
+}
+.cer-track{
+  display:flex;
+  width:600%;
+  height:100%;
+  transition:transform 0.7s cubic-bezier(0.77,0,0.175,1);
+  will-change:transform;
+}
+.cer-card{
+  width:calc(100% / 6);
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px 60px;position:relative;
+  box-sizing:border-box;
+}
+.cer-inner{
+  max-width:500px;width:100%;
+  padding:44px 40px;position:relative;
+  border:1px solid;
+  overflow:hidden;
+}
+.cer-inner::before{
+  content:'';position:absolute;inset:0;opacity:0.04;
+  background:var(--pat,'');background-size:40px 40px;
+}
+/* card themes */
+.cer-haldi .cer-inner{border-color:rgba(245,197,24,0.3);background:linear-gradient(135deg,rgba(80,50,0,0.6),rgba(40,25,0,0.8))}
+.cer-mehandi .cer-inner{border-color:rgba(74,156,80,0.3);background:linear-gradient(135deg,rgba(0,40,10,0.6),rgba(0,20,5,0.8))}
+.cer-engagement .cer-inner{border-color:rgba(192,57,90,0.3);background:linear-gradient(135deg,rgba(60,0,20,0.6),rgba(30,0,10,0.8))}
+.cer-sangeet .cer-inner{border-color:rgba(123,45,139,0.3);background:linear-gradient(135deg,rgba(40,0,60,0.6),rgba(20,0,30,0.8))}
+.cer-phere .cer-inner{border-color:rgba(200,90,30,0.35);background:linear-gradient(135deg,rgba(70,15,0,0.6),rgba(35,7,0,0.8))}
+.cer-reception .cer-inner{border-color:rgba(212,160,23,0.35);background:linear-gradient(135deg,rgba(50,30,0,0.6),rgba(25,15,0,0.8))}
+.cer-icon{font-size:64px;display:block;margin-bottom:16px;filter:drop-shadow(0 0 20px currentColor);animation:floatIcon 4s ease-in-out infinite}
+@keyframes floatIcon{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+.cer-name{
+  font-family:'Italiana',serif;font-size:52px;color:#fdf6ec;
+  margin-bottom:8px;line-height:1;
+}
+.cer-date{
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:4px;
+  color:rgba(212,160,23,0.8);text-transform:uppercase;margin-bottom:16px;
+}
+.cer-time{font-size:18px;color:rgba(253,246,236,0.75);font-style:italic;margin-bottom:6px}
+.cer-venue{font-size:14px;color:rgba(212,160,23,0.7);letter-spacing:2px}
+.cer-desc{font-size:15px;color:rgba(253,246,236,0.5);line-height:1.8;margin-top:14px;font-style:italic}
+/* Nav dots */
+.cer-dots{
+  display:flex;gap:10px;justify-content:center;padding:16px 0 24px;flex-shrink:0;
+}
+.cer-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(212,160,23,0.25);cursor:pointer;
+  transition:all 0.3s ease;border:none;
+}
+.cer-dot.on{background:rgba(212,160,23,0.9);transform:scale(1.5)}
+/* Arrow buttons */
+.cer-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:20;
+  background:rgba(5,2,5,0.7);border:1px solid rgba(212,160,23,0.2);
+  color:rgba(212,160,23,0.8);font-size:24px;
+  width:50px;height:50px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.3s ease;backdrop-filter:blur(10px);
+}
+.cer-arrow:hover{background:rgba(92,16,32,0.8);border-color:rgba(212,160,23,0.5)}
+.cer-arrow.left{left:20px}
+.cer-arrow.right{right:20px}
+
+/* ═══════════════════════════════
+   CHAPTER 5 — VENUE
+═══════════════════════════════ */
+#ch5{flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.venue-hero{max-width:760px;width:100%;padding:40px 30px}
+.venue-hero-title{font-family:'Italiana',serif;font-size:50px;color:#fdf6ec;margin-bottom:8px}
+.venue-hero-sub{font-size:13px;letter-spacing:6px;color:rgba(212,160,23,0.6);font-family:'Cinzel',serif;text-transform:uppercase;margin-bottom:40px}
+.venue-split{display:grid;grid-template-columns:1fr 1fr;gap:20px;text-align:left}
+.venue-tile{
+  padding:32px;position:relative;overflow:hidden;
+  border:1px solid rgba(212,160,23,0.2);
+  background:rgba(253,246,236,0.03);
+  transition:transform 0.4s ease,border-color 0.4s ease;
+  cursor:default;
+}
+.venue-tile:hover{transform:translateY(-6px);border-color:rgba(212,160,23,0.5)}
+.venue-tile::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--vc,#d4a017),transparent);
+  transform:scaleX(0);transition:transform 0.4s ease;
+}
+.venue-tile:hover::after{transform:scaleX(1)}
+.venue-ikon{font-size:42px;margin-bottom:16px;display:block}
+.venue-tag{
+  font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;
+  color:rgba(212,160,23,0.6);text-transform:uppercase;margin-bottom:10px;display:block;
+}
+.venue-n{font-family:'Italiana',serif;font-size:32px;color:#fdf6ec;margin-bottom:8px}
+.venue-a{font-size:13px;color:rgba(253,246,236,0.5);line-height:1.8;font-style:italic;margin-bottom:16px}
+.venue-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:transparent;border:1px solid rgba(212,160,23,0.3);
+  color:rgba(212,160,23,0.8);padding:9px 18px;
+  font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;text-transform:uppercase;
+  text-decoration:none;transition:all 0.3s ease;cursor:pointer;
+}
+.venue-btn:hover{background:rgba(92,16,32,0.5);border-color:rgba(212,160,23,0.6);color:#d4a017}
+
+/* ═══════════════════════════════
+   CHAPTER 6 — RSVP
+═══════════════════════════════ */
+#ch6{flex-direction:column;align-items:center;justify-content:center}
+.rsvp-universe{max-width:560px;width:100%;padding:40px 30px;text-align:center}
+.rsvp-giant{
+  font-family:'Italiana',serif;
+  font-size:clamp(60px,12vw,110px);
+  line-height:0.9;
+  background:linear-gradient(180deg,#fdf6ec,#d4a017);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:20px;
+}
+.rsvp-verse{
+  font-size:18px;font-style:italic;
+  color:rgba(253,246,236,0.65);line-height:1.9;margin-bottom:32px;
+}
+.rsvp-field{
+  width:100%;background:rgba(253,246,236,0.05);
+  border:none;border-bottom:1px solid rgba(212,160,23,0.3);
+  color:#fdf6ec;font-family:'Cormorant Garamond',serif;font-size:17px;
+  padding:14px 4px;margin-bottom:18px;outline:none;
+  transition:border-color 0.3s ease;display:block;
+}
+.rsvp-field::placeholder{color:rgba(253,246,236,0.3)}
+.rsvp-field:focus{border-color:rgba(212,160,23,0.8)}
+.rsvp-field option{background:#1a0510;color:#fdf6ec}
+.rsvp-submit{
+  width:100%;padding:18px;margin-top:8px;
+  background:transparent;
+  border:1px solid rgba(212,160,23,0.4);
+  color:rgba(212,160,23,0.9);
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:8px;
+  text-transform:uppercase;cursor:pointer;
+  position:relative;overflow:hidden;transition:all 0.4s ease;
+}
+.rsvp-submit::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(92,16,32,0.6),rgba(13,92,82,0.4));
+  transform:translateX(-100%);transition:transform 0.5s ease;
+}
+.rsvp-submit:hover::before{transform:translateX(0)}
+.rsvp-submit:hover{border-color:rgba(212,160,23,0.8)}
+.rsvp-submit span{position:relative;z-index:1}
+.rsvp-ok{
+  display:none;font-family:'Sacramento',cursive;font-size:34px;
+  color:rgba(212,160,23,0.9);margin-top:20px;
+  animation:fadeInUp 0.8s ease;
+}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══════════════════════════════
+   CHAPTER 7 — CLOSING
+═══════════════════════════════ */
+#ch7{flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.close-scene{max-width:700px;padding:40px 30px;position:relative}
+.close-names{
+  font-family:'Italiana',serif;
+  font-size:clamp(50px,11vw,110px);
+  line-height:1;letter-spacing:2px;
+  position:relative;z-index:2;
+}
+.close-bride{color:#f0a0b0;display:block}
+.close-amp{
+  font-family:'Sacramento',cursive;font-size:clamp(40px,8vw,80px);
+  color:rgba(212,160,23,0.8);display:block;margin:4px 0;
+}
+.close-groom{color:#80d0c0;display:block}
+.close-quote{
+  font-size:19px;font-style:italic;color:rgba(253,246,236,0.55);
+  line-height:2;margin:30px 0;position:relative;z-index:2;
+}
+.close-families{
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:6px;
+  color:rgba(212,160,23,0.5);text-transform:uppercase;margin-top:20px;
+}
+.close-bottom{
+  display:flex;gap:30px;justify-content:center;flex-wrap:wrap;
+  margin-top:28px;font-size:13px;color:rgba(253,246,236,0.4);
+  line-height:2;
+}
+.contact-block{text-align:left;border-left:1px solid rgba(212,160,23,0.2);padding-left:14px}
+.contact-role{font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;color:rgba(212,160,23,0.5);display:block;margin-bottom:2px;text-transform:uppercase}
+
+/* ═══════════════════════════════
+   NAV — CHAPTER INDICATORS
+═══════════════════════════════ */
+#chapter-nav{
+  position:fixed;right:24px;top:50%;transform:translateY(-50%);
+  z-index:100;display:flex;flex-direction:column;gap:10px;
+}
+.cnav-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(212,160,23,0.2);cursor:pointer;
+  transition:all 0.4s ease;border:none;
+}
+.cnav-dot.on{background:rgba(212,160,23,0.9);height:24px;border-radius:3px}
+/* Next chapter button */
+#next-btn{
+  position:fixed;bottom:32px;left:50%;transform:translateX(-50%);
+  z-index:100;
+  background:transparent;border:1px solid rgba(212,160,23,0.3);
+  color:rgba(212,160,23,0.7);
+  font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;text-transform:uppercase;
+  padding:10px 24px;cursor:pointer;
+  transition:all 0.3s ease;display:none;
+  animation:floatBtn 3s ease-in-out infinite;
+}
+@keyframes floatBtn{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-6px)}}
+#next-btn.show{display:block}
+#next-btn:hover{background:rgba(92,16,32,0.5);color:#d4a017;border-color:rgba(212,160,23,0.7)}
+/* Chapter label */
+#ch-label{
+  position:fixed;top:28px;left:50%;transform:translateX(-50%);
+  z-index:100;font-family:'Cinzel',serif;font-size:9px;letter-spacing:7px;
+  color:rgba(212,160,23,0.5);text-transform:uppercase;
+  transition:opacity 0.5s ease;display:none;
+}
+#ch-label.show{display:block}
+
+/* ═══════════════════════════════
+   SCENE BACKGROUNDS
+═══════════════════════════════ */
+#scene-canvas{position:fixed;inset:0;z-index:2;pointer-events:none}
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media(max-width:700px){
+  #ch2{flex-direction:column}
+  .union-col{width:100%;height:60px;flex-direction:row;writing-mode:horizontal-tb}
+  .weds-vertical{writing-mode:horizontal-tb;letter-spacing:8px}
+  .union-col::before{display:none}
+  .split-left,.split-right{padding:30px 24px}
+  .venue-split{grid-template-columns:1fr}
+  .cer-arrow{display:none}
+  .cer-card{padding:16px 20px}
+}
+
+/* Divider line util */
+.gold-line{
+  display:flex;align-items:center;gap:14px;margin:16px 0;
+}
+.gold-line::before,.gold-line::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(212,160,23,0.4),transparent)}
+.gold-line span{color:rgba(212,160,23,0.5);font-size:12px;letter-spacing:4px}
+</style>
+</head>
+<body>
+
+<!-- LAYERED CANVASES -->
+<canvas id="bg-canvas"></canvas>
+<canvas id="scene-canvas"></canvas>
+<canvas id="particle-canvas"></canvas>
+
+<!-- CHAPTER NAV -->
+<div id="chapter-nav"></div>
+<div id="ch-label"></div>
+<button id="next-btn" onclick="nextChapter()">Continue ↓</button>
+
+<!-- ═══════════════════════ CHAPTERS ═══════════════════════ -->
+<div id="chapters">
+
+  <!-- ── CH0: OPENING ── -->
+  <div class="chapter active" id="ch0" onclick="gotoChapter(1)">
+    <div class="om-orbit">
+      <div class="om-ring"></div>
+      <div class="om-ring"></div>
+      <div class="om-ring"></div>
+      <div class="om-dot" style="--g:#d4a017;--d:20"></div>
+      <div class="om-dot" style="--g:#c85a1e;--d:13;transform-origin:-60px 0;animation-delay:-4s"></div>
+      <div class="om-dot" style="--g:#8b1a3a;--d:30;transform-origin:-68px 0;animation-delay:-10s"></div>
+      <div class="om-core">🕉️</div>
+    </div>
+    <div class="ch0-names">Sonia &nbsp;♡&nbsp; Rahul</div>
+    <div class="ch0-title">A Royal Wedding · Jaipur · November 2025</div>
+    <div class="ch0-tap">Touch to begin this story</div>
+  </div>
+
+  <!-- ── CH1: GANESH ── -->
+  <div class="chapter" id="ch1">
+    <div class="ganesh-scene">
+      <div class="deity-glow"></div>
+      <div class="ganesh-big">🐘</div>
+      <div class="ganesh-mantra">
+        ॥ Vighnahartaya Namah ॥<br>
+        <span style="font-size:17px;color:rgba(212,160,23,0.7)">With the blessings of Shri Ganesha<br>we begin this most sacred journey</span>
+      </div>
+      <div class="gold-line" style="margin-top:24px;width:260px"><span>✦ ❋ ✦</span></div>
+      <div class="ganesh-sub">Shubh Mangal Savdhaan</div>
+    </div>
+  </div>
+
+  <!-- ── CH2: BRIDE & GROOM ── -->
+  <div class="chapter" id="ch2">
+    <div class="split-left">
+      <div class="bg-paisley" style="bottom:-80px;right:-60px">🌸</div>
+      <div class="person-label">The Bride</div>
+      <div class="name-mega bride-col">Sonia<br>Sharma</div>
+      <div class="family-text">
+        <span class="family-label">Daughter of</span>
+        Mr. Krishan Kumar Sharma<br>&amp; Mrs. Savita Sharma
+        <span class="family-label" style="margin-top:14px">Granddaughter of</span>
+        Late Shri Ramji Lal Sharma<br>&amp; Smt. Kamla Devi Sharma
+      </div>
+    </div>
+    <div class="union-col">
+      <div class="union-gem">💍</div>
+      <div class="weds-vertical">weds</div>
+      <div class="union-gem" style="font-size:20px;color:rgba(212,160,23,0.5);animation-delay:1.5s">✦</div>
+    </div>
+    <div class="split-right">
+      <div class="bg-paisley" style="top:-80px;left:-60px">🌿</div>
+      <div class="person-label">The Groom</div>
+      <div class="name-mega groom-col">Rahul<br>Sharma</div>
+      <div class="family-text">
+        <span class="family-label">Son of</span>
+        Mr. Vikram Sharma<br>&amp; Mrs. Anita Sharma
+        <span class="family-label" style="margin-top:14px">Grandson of</span>
+        Late Shri Mohan Lal Sharma<br>&amp; Smt. Pushpa Devi Sharma
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CH3: DATES ── -->
+  <div class="chapter" id="ch3">
+    <div class="date-hero">
+      <!-- SVG Mughal arch backdrop -->
+      <svg class="arch-bg" viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <!-- Outer jali pattern -->
+        <defs>
+          <pattern id="jali" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+            <circle cx="15" cy="15" r="1" fill="rgba(212,160,23,0.08)"/>
+            <path d="M0 15 Q7.5 7.5 15 15 Q22.5 22.5 30 15" fill="none" stroke="rgba(212,160,23,0.05)" stroke-width="0.5"/>
+            <path d="M15 0 Q22.5 7.5 15 15 Q7.5 22.5 15 30" fill="none" stroke="rgba(212,160,23,0.05)" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+        <rect width="700" height="500" fill="url(#jali)"/>
+        <!-- Main arch -->
+        <path d="M150,480 L150,240 Q150,80 350,60 Q550,80 550,240 L550,480" fill="none" stroke="rgba(212,160,23,0.18)" stroke-width="1"/>
+        <!-- Arch decorations -->
+        <path d="M180,480 L180,260 Q180,110 350,92 Q520,110 520,260 L520,480" fill="none" stroke="rgba(212,160,23,0.1)" stroke-width="0.5"/>
+        <!-- Finial at top -->
+        <circle cx="350" cy="62" r="8" fill="none" stroke="rgba(212,160,23,0.35)" stroke-width="1"/>
+        <circle cx="350" cy="62" r="3" fill="rgba(212,160,23,0.5)"/>
+        <line x1="350" y1="54" x2="350" y2="30" stroke="rgba(212,160,23,0.3)" stroke-width="0.8"/>
+        <polygon points="350,20 355,35 350,30 345,35" fill="rgba(212,160,23,0.4)"/>
+        <!-- Side minarets -->
+        <rect x="115" y="280" width="24" height="200" fill="none" stroke="rgba(212,160,23,0.15)" stroke-width="0.8"/>
+        <path d="M115,280 Q127,255 139,280" fill="none" stroke="rgba(212,160,23,0.2)" stroke-width="0.8"/>
+        <rect x="561" y="280" width="24" height="200" fill="none" stroke="rgba(212,160,23,0.15)" stroke-width="0.8"/>
+        <path d="M561,280 Q573,255 585,280" fill="none" stroke="rgba(212,160,23,0.2)" stroke-width="0.8"/>
+        <!-- Jali windows -->
+        <ellipse cx="127" cy="340" rx="8" ry="10" fill="none" stroke="rgba(212,160,23,0.2)" stroke-width="0.6"/>
+        <ellipse cx="573" cy="340" rx="8" ry="10" fill="none" stroke="rgba(212,160,23,0.2)" stroke-width="0.6"/>
+        <!-- Ground line -->
+        <line x1="80" y1="480" x2="620" y2="480" stroke="rgba(212,160,23,0.12)" stroke-width="0.5"/>
+        <!-- Decorative diamonds on arch -->
+        <g fill="rgba(212,160,23,0.3)">
+          <polygon points="350,68 354,78 350,88 346,78"/>
+          <polygon points="200,190 204,198 200,206 196,198"/>
+          <polygon points="500,190 504,198 500,206 496,198"/>
+          <polygon points="162,310 166,318 162,326 158,318"/>
+          <polygon points="538,310 542,318 538,326 534,318"/>
+        </g>
+      </svg>
+      <div class="date-eyebrow">Jaipur, Rajasthan · The Pink City</div>
+      <div class="date-giant">17—22<br>Nov</div>
+      <div class="date-year">Two Thousand &amp; Twenty Five</div>
+      <div class="date-city">A week of love, colour &amp; celebration</div>
+    </div>
+  </div>
+
+  <!-- ── CH4: CEREMONIES ── -->
+  <div class="chapter" id="ch4" style="flex-direction:column">
+    <div class="cer-header">
+      <div class="cer-title">Six Sacred Days</div>
+      <div class="cer-sub">Swipe · click arrows · or tap dots</div>
+    </div>
+    <div class="cer-track-wrap">
+      <button class="cer-arrow left" onclick="moveCer(-1)">&#8592;</button>
+      <div class="cer-track" id="cer-track">
+
+        <div class="cer-card cer-haldi">
+          <div class="cer-inner">
+            <span class="cer-icon">🌼</span>
+            <div class="cer-name">Haldi</div>
+            <div class="cer-date">Monday · 17 November 2025</div>
+            <div class="cer-time">10:00 AM onwards</div>
+            <div class="cer-venue">Sharma Residence · Civil Lines, Jaipur</div>
+            <div class="cer-desc">The golden ritual of turmeric — smeared with love by family, marking the beginning of forever</div>
+          </div>
+        </div>
+
+        <div class="cer-card cer-mehandi">
+          <div class="cer-inner">
+            <span class="cer-icon">🌿</span>
+            <div class="cer-name">Mehandi</div>
+            <div class="cer-date">Tuesday · 18 November 2025</div>
+            <div class="cer-time">4:00 PM – 9:00 PM</div>
+            <div class="cer-venue">Sharma Residence · Civil Lines, Jaipur</div>
+            <div class="cer-desc">Intricate henna art weaving stories of love — the deeper the colour, the deeper the bond</div>
+          </div>
+        </div>
+
+        <div class="cer-card cer-engagement">
+          <div class="cer-inner">
+            <span class="cer-icon">💍</span>
+            <div class="cer-name">Engagement</div>
+            <div class="cer-date">Wednesday · 19 November 2025</div>
+            <div class="cer-time">6:00 PM – 10:00 PM</div>
+            <div class="cer-venue">Jai Mahal Palace · Jaipur</div>
+            <div class="cer-desc">Two hearts, two rings, one promise — witnessed beneath the stars of Jaipur</div>
+          </div>
+        </div>
+
+        <div class="cer-card cer-sangeet">
+          <div class="cer-inner">
+            <span class="cer-icon">🎶</span>
+            <div class="cer-name">Sangeet</div>
+            <div class="cer-date">Thursday · 20 November 2025</div>
+            <div class="cer-time">7:00 PM – Late Night</div>
+            <div class="cer-venue">Jai Mahal Palace · Jaipur</div>
+            <div class="cer-desc">Music, dance &amp; uncontrollable joy — the night the families become one</div>
+          </div>
+        </div>
+
+        <div class="cer-card cer-phere">
+          <div class="cer-inner">
+            <span class="cer-icon">🔥</span>
+            <div class="cer-name">Phere · Vivah</div>
+            <div class="cer-date">Friday · 21 November 2025</div>
+            <div class="cer-time">Muhurat: 8:30 PM</div>
+            <div class="cer-venue">Rambagh Palace · Jaipur</div>
+            <div class="cer-desc">Seven sacred rounds, seven lifetimes — two souls sealed by fire and the Vedas</div>
+          </div>
+        </div>
+
+        <div class="cer-card cer-reception">
+          <div class="cer-inner">
+            <span class="cer-icon">✨</span>
+            <div class="cer-name">Reception</div>
+            <div class="cer-date">Saturday · 22 November 2025</div>
+            <div class="cer-time">7:00 PM – Midnight</div>
+            <div class="cer-venue">Rambagh Palace · Jaipur</div>
+            <div class="cer-desc">The grandest celebration — a night of champagne toasts, chandeliers &amp; forever memories</div>
+          </div>
+        </div>
+
+      </div><!-- cer-track -->
+      <button class="cer-arrow right" onclick="moveCer(1)">&#8594;</button>
+    </div>
+    <div class="cer-dots" id="cer-dots"></div>
+  </div>
+
+  <!-- ── CH5: VENUE ── -->
+  <div class="chapter" id="ch5">
+    <div class="venue-hero">
+      <div class="venue-hero-title">Where to find us</div>
+      <div class="venue-hero-sub">Two Palaces · One Love Story</div>
+      <div class="venue-split">
+        <div class="venue-tile" style="--vc:#c85a1e">
+          <span class="venue-ikon">🏰</span>
+          <span class="venue-tag">Engagement &amp; Sangeet · 19–20 Nov</span>
+          <div class="venue-n">Jai Mahal Palace</div>
+          <div class="venue-a">Jacob Road, Civil Lines<br>Jaipur, Rajasthan 302006</div>
+          <a class="venue-btn" href="https://maps.google.com/?q=Jai+Mahal+Palace+Jaipur" target="_blank">📍 Open in Maps</a>
+        </div>
+        <div class="venue-tile" style="--vc:#d4a017">
+          <span class="venue-ikon">👑</span>
+          <span class="venue-tag">Phere &amp; Reception · 21–22 Nov</span>
+          <div class="venue-n">Rambagh Palace</div>
+          <div class="venue-a">Bhawani Singh Road, Rambagh<br>Jaipur, Rajasthan 302005</div>
+          <a class="venue-btn" href="https://maps.google.com/?q=Rambagh+Palace+Jaipur" target="_blank">📍 Open in Maps</a>
+        </div>
+      </div>
+      <div style="margin-top:24px;font-size:13px;color:rgba(253,246,236,0.35);font-style:italic;text-align:center">
+        Both venues are within 20 minutes of each other in the heart of Jaipur
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CH6: RSVP ── -->
+  <div class="chapter" id="ch6">
+    <div class="rsvp-universe">
+      <div class="rsvp-giant">R.S.V.P.</div>
+      <div class="rsvp-verse">
+        Your presence is the greatest gift.<br>
+        Kindly let us know by <em style="color:rgba(212,160,23,0.8)">1st November 2025</em>
+      </div>
+      <input class="rsvp-field" id="rn" type="text" placeholder="Your name"/>
+      <input class="rsvp-field" id="rp" type="text" placeholder="WhatsApp number"/>
+      <select class="rsvp-field" id="re">
+        <option value="">Which ceremonies will you attend?</option>
+        <option>All of them — wouldn't miss a moment!</option>
+        <option>Haldi &amp; Mehandi</option>
+        <option>Sangeet &amp; Engagement</option>
+        <option>Phere &amp; Reception</option>
+      </select>
+      <input class="rsvp-field" id="rg" type="number" placeholder="Number of guests" min="1" max="10"/>
+      <button class="rsvp-submit" onclick="doRSVP()"><span>Confirm My Attendance</span></button>
+      <div class="rsvp-ok" id="rok">🌸 Wonderful — we cannot wait to celebrate with you! 🌸</div>
+    </div>
+  </div>
+
+  <!-- ── CH7: CLOSING ── -->
+  <div class="chapter" id="ch7">
+    <div class="close-scene">
+      <div class="close-names">
+        <span class="close-bride">Sonia</span>
+        <span class="close-amp">♡</span>
+        <span class="close-groom">Rahul</span>
+      </div>
+      <div class="close-quote">
+        Two families. One love story.<br>
+        A lifetime of mornings together.<br>
+        Thank you for being part of ours.
+      </div>
+      <div class="gold-line"><span>✦ ❋ ✦</span></div>
+      <div class="close-families">The Sharma Families · Jaipur · November 2025</div>
+      <div class="close-bottom">
+        <div class="contact-block">
+          <span class="contact-role">Bride</span>Sonia: +91 98765 43210
+        </div>
+        <div class="contact-block">
+          <span class="contact-role">Groom</span>Rahul: +91 98765 43211
+        </div>
+        <div class="contact-block">
+          <span class="contact-role">Bride's Father</span>KK Sharma: +91 98765 12345
+        </div>
+        <div class="contact-block">
+          <span class="contact-role">Groom's Father</span>Vikram: +91 98765 67890
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- #chapters -->
+
+<script>
+/* ═══════════════════════════════════
+   STATE
+═══════════════════════════════════ */
+const TOTAL = 8;
+let cur = 0;
+let transitioning = false;
+const labels = ['','Blessings','The Couple','Save the Date','Ceremonies','Venues','R.S.V.P.','With Love'];
+
+/* ═══════════════════════════════════
+   BG CANVAS — Atmospheric painter
+═══════════════════════════════════ */
+const bgC = document.getElementById('bg-canvas');
+const bgCtx = bgC.getContext('2d');
+let bgW, bgH;
+
+const bgPalettes = [
+  // ch0 — deep void
+  ['#050205','#0a0510','#080308'],
+  // ch1 — warm saffron
+  ['#120408','#2a0c0a','#1a0608'],
+  // ch2 — split rose/teal
+  ['#12020a','#050e0c','#0e0608'],
+  // ch3 — royal purple
+  ['#08060f','#100a1a','#060410'],
+  // ch4 — ceremony warm
+  ['#0f0505','#1a0808','#0a0303'],
+  // ch5 — palace night
+  ['#050810','#080d18','#030608'],
+  // ch6 — intimate
+  ['#0a0412','#14061a','#06020c'],
+  // ch7 — golden
+  ['#100a02','#1a1204','#080500'],
+];
+
+let bgTarget = 0, bgNow = 0;
+const orbs = Array.from({length:6}, (_,i) => ({
+  x: Math.random(), y: Math.random(),
+  vx: (Math.random()-0.5)*0.0002, vy: (Math.random()-0.5)*0.0002,
+  r: 0.3 + Math.random()*0.3,
+  c: ['rgba(139,26,58,','rgba(13,92,82,','rgba(200,90,30,','rgba(92,16,32,','rgba(123,45,139,','rgba(184,134,11,'][i],
+  a: 0.05 + Math.random()*0.1
+}));
+
+function resizeBg(){
+  bgW = bgC.width = window.innerWidth;
+  bgH = bgC.height = window.innerHeight;
+}
+
+function drawBg(){
+  const pal = bgPalettes[Math.min(cur, bgPalettes.length-1)];
+  const grad = bgCtx.createRadialGradient(bgW*0.5,bgH*0.5,0,bgW*0.5,bgH*0.5,bgW*0.8);
+  grad.addColorStop(0, pal[1]);
+  grad.addColorStop(0.5, pal[0]);
+  grad.addColorStop(1, pal[2]);
+  bgCtx.fillStyle = grad;
+  bgCtx.fillRect(0,0,bgW,bgH);
+  // Orbs
+  orbs.forEach(o => {
+    o.x += o.vx; o.y += o.vy;
+    if(o.x<-0.1) o.x=1.1; if(o.x>1.1) o.x=-0.1;
+    if(o.y<-0.1) o.y=1.1; if(o.y>1.1) o.y=-0.1;
+    const rg = bgCtx.createRadialGradient(o.x*bgW, o.y*bgH, 0, o.x*bgW, o.y*bgH, o.r*bgW);
+    rg.addColorStop(0, o.c + o.a + ')');
+    rg.addColorStop(1, o.c + '0)');
+    bgCtx.fillStyle = rg;
+    bgCtx.fillRect(0,0,bgW,bgH);
+  });
+}
+
+/* ═══════════════════════════════════
+   PARTICLE CANVAS
+═══════════════════════════════════ */
+const pC = document.getElementById('particle-canvas');
+const pCtx = pC.getContext('2d');
+let pW, pH;
+
+function resizeP(){ pW = pC.width = window.innerWidth; pH = pC.height = window.innerHeight; }
+
+// Particle systems per chapter
+const systems = Array.from({length:TOTAL}, () => []);
+
+function addParticles(chIdx, count=60){
+  const sys = systems[chIdx];
+  for(let i=0;i<count;i++){
+    const types = [
+      {char:'✦', sizes:[8,16]},
+      {char:'❋', sizes:[6,14]},
+      {char:'◆', sizes:[4,10]},
+    ];
+    const type = types[Math.floor(Math.random()*types.length)];
+    sys.push({
+      x: Math.random()*pW,
+      y: Math.random()*pH + pH,
+      vx: (Math.random()-0.5)*0.4,
+      vy: -(0.3 + Math.random()*0.8),
+      size: type.sizes[0] + Math.random()*(type.sizes[1]-type.sizes[0]),
+      char: type.char,
+      alpha: 0,
+      alphaTarget: 0.2 + Math.random()*0.5,
+      life: 0,
+      maxLife: 200 + Math.random()*300,
+      rot: Math.random()*Math.PI*2,
+      rotV: (Math.random()-0.5)*0.02,
+      color: ['rgba(212,160,23,','rgba(200,90,30,','rgba(139,26,58,','rgba(253,246,236,'][Math.floor(Math.random()*4)]
+    });
+  }
+}
+
+function drawParticles(){
+  pCtx.clearRect(0,0,pW,pH);
+  const sys = systems[cur];
+  sys.forEach((p,i) => {
+    p.x += p.vx; p.y += p.vy;
+    p.rot += p.rotV;
+    p.life++;
+    const progress = p.life / p.maxLife;
+    p.alpha = progress < 0.1 ? progress*10*p.alphaTarget
+            : progress > 0.7 ? p.alphaTarget*(1-(progress-0.7)/0.3)
+            : p.alphaTarget;
+    if(p.life > p.maxLife){
+      p.x = Math.random()*pW; p.y = pH + 20; p.life = 0;
+    }
+    pCtx.save();
+    pCtx.globalAlpha = p.alpha;
+    pCtx.translate(p.x, p.y);
+    pCtx.rotate(p.rot);
+    pCtx.font = `${p.size}px serif`;
+    pCtx.fillStyle = p.color + p.alpha + ')';
+    pCtx.fillText(p.char, 0, 0);
+    pCtx.restore();
+  });
+}
+
+/* Stars */
+const stars = Array.from({length:200}, () => ({
+  x: Math.random(), y: Math.random(),
+  r: Math.random()*1.5+0.3,
+  a: Math.random()*0.6+0.1,
+  phase: Math.random()*Math.PI*2,
+  speed: 0.005+Math.random()*0.02
+}));
+
+function drawStars(ctx, w, h){
+  const t = Date.now()*0.001;
+  stars.forEach(s => {
+    const alpha = s.a * (0.5 + 0.5*Math.sin(t*s.speed + s.phase));
+    ctx.beginPath();
+    ctx.arc(s.x*w, s.y*h, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(253,246,236,${alpha})`;
+    ctx.fill();
+  });
+}
+
+/* ═══════════════════════════════════
+   SCENE CANVAS — Fort + Landscape
+═══════════════════════════════════ */
+const scC = document.getElementById('scene-canvas');
+const scCtx = scC.getContext('2d');
+let scW, scH;
+function resizeSc(){ scW = scC.width = window.innerWidth; scH = scC.height = window.innerHeight; }
+
+function drawFort(){
+  // Moon
+  scCtx.beginPath();
+  scCtx.arc(scW*0.78, scH*0.14, 32, 0, Math.PI*2);
+  scCtx.fillStyle = 'rgba(255,240,200,0.06)';
+  scCtx.fill();
+  scCtx.beginPath();
+  scCtx.arc(scW*0.78, scH*0.14, 24, 0, Math.PI*2);
+  scCtx.fillStyle = 'rgba(255,240,200,0.04)';
+  scCtx.fill();
+
+  // Fort silhouette
+  scCtx.fillStyle = 'rgba(8,3,6,0.92)';
+  scCtx.beginPath();
+  const fw = scW / 1440;
+  const bh = scH * 0.28;
+  const base = scH;
+  // simplified fort path scaled to screen
+  const pts = [
+    [0,base],[0,base-bh*0.7],
+    [0.02,base-bh*0.7],[0.02,base-bh*0.8],[0.03,base-bh*0.8],[0.03,base-bh*0.9],[0.035,base-bh*0.9],[0.035,base-bh],[0.04,base-bh],[0.04,base-bh*0.9],[0.045,base-bh*0.9],[0.045,base-bh*0.8],[0.055,base-bh*0.8],[0.055,base-bh*0.7],
+    [0.08,base-bh*0.7],[0.08,base-bh*0.85],[0.085,base-bh*0.85],[0.085,base-bh*0.95],[0.09,base-bh*0.95],[0.09,base-bh],[0.095,base-bh],[0.095,base-bh*0.95],[0.1,base-bh*0.95],[0.1,base-bh*0.85],[0.11,base-bh*0.85],[0.11,base-bh*0.7],
+    [0.14,base-bh*0.7],[0.14,base-bh*0.78],[0.15,base-bh*0.78],[0.15,base-bh*0.88],[0.155,base-bh*0.88],[0.155,base-bh],[0.16,base-bh],[0.16,base-bh*0.88],[0.165,base-bh*0.88],[0.165,base-bh*0.78],[0.175,base-bh*0.78],[0.175,base-bh*0.7],
+    // central tower
+    [0.38,base-bh*0.7],[0.38,base-bh*0.82],[0.39,base-bh*0.82],[0.39,base-bh*0.92],[0.395,base-bh*0.92],[0.395,base-bh*1.05],[0.4,base-bh*1.05],[0.4,base-bh*0.92],[0.405,base-bh*0.92],[0.405,base-bh*0.82],[0.41,base-bh*0.82],[0.41,base-bh*0.7],
+    [0.44,base-bh*0.7],[0.44,base-bh*0.85],[0.45,base-bh*0.85],[0.45,base-bh*1.0],[0.46,base-bh*1.0],[0.46,base-bh*0.85],[0.47,base-bh*0.85],[0.47,base-bh*0.7],
+    // main central palace
+    [0.48,base-bh*0.7],[0.48,base-bh*0.75],[0.49,base-bh*0.75],[0.49,base-bh*0.6],[0.5,base-bh*0.6],[0.5,base-bh*0.55],[0.505,base-bh*0.55],[0.505,base-bh*0.6],[0.51,base-bh*0.6],[0.51,base-bh*0.75],[0.52,base-bh*0.75],[0.52,base-bh*0.7],
+    [0.6,base-bh*0.7],[0.6,base-bh*0.8],[0.61,base-bh*0.8],[0.61,base-bh*0.9],[0.615,base-bh*0.9],[0.615,base-bh],[0.62,base-bh],[0.62,base-bh*0.9],[0.625,base-bh*0.9],[0.625,base-bh*0.8],[0.63,base-bh*0.8],[0.63,base-bh*0.7],
+    [0.75,base-bh*0.7],[0.75,base-bh*0.78],[0.76,base-bh*0.78],[0.76,base-bh*0.88],[0.765,base-bh*0.88],[0.765,base-bh*1.0],[0.77,base-bh*1.0],[0.77,base-bh*0.88],[0.775,base-bh*0.88],[0.775,base-bh*0.78],[0.785,base-bh*0.78],[0.785,base-bh*0.7],
+    [0.85,base-bh*0.7],[0.85,base-bh*0.82],[0.855,base-bh*0.82],[0.855,base-bh*0.92],[0.86,base-bh*0.92],[0.86,base-bh],[0.865,base-bh],[0.865,base-bh*0.92],[0.87,base-bh*0.92],[0.87,base-bh*0.82],[0.88,base-bh*0.82],[0.88,base-bh*0.7],
+    [1.0,base-bh*0.7],[1.0,base]
+  ];
+  scCtx.moveTo(pts[0][0]*scW, pts[0][1]);
+  pts.forEach(p => scCtx.lineTo(p[0]*scW, p[1]));
+  scCtx.closePath();
+  scCtx.fill();
+
+  // Ground gradient
+  const gr = scCtx.createLinearGradient(0, scH*0.76, 0, scH);
+  gr.addColorStop(0,'rgba(8,3,6,0)');
+  gr.addColorStop(1,'rgba(8,3,6,0.98)');
+  scCtx.fillStyle = gr;
+  scCtx.fillRect(0, scH*0.76, scW, scH*0.24);
+
+  // Lit windows
+  const wins = [[0.09,0.06],[0.16,0.12],[0.4,0.08],[0.5,0.5],[0.51,0.5],[0.62,0.1],[0.77,0.12],[0.86,0.08]];
+  wins.forEach(([wx,wy]) => {
+    const cx = wx*scW, cy = base - bh*wy;
+    const wg = scCtx.createRadialGradient(cx,cy,0,cx,cy,14);
+    wg.addColorStop(0,'rgba(255,200,80,0.15)');
+    wg.addColorStop(1,'rgba(255,200,80,0)');
+    scCtx.fillStyle = wg;
+    scCtx.fillRect(cx-14, cy-14, 28, 28);
+  });
+}
+
+/* ═══════════════════════════════════
+   MAIN LOOP
+═══════════════════════════════════ */
+function loop(){
+  bgC.width = bgC.width; // clear
+  drawBg();
+  drawStars(bgCtx, bgW, bgH);
+  scCtx.clearRect(0,0,scW,scH);
+  drawFort();
+  drawParticles();
+  requestAnimationFrame(loop);
+}
+
+/* ═══════════════════════════════════
+   CHAPTER NAV
+═══════════════════════════════════ */
+const navEl = document.getElementById('chapter-nav');
+const labelEl = document.getElementById('ch-label');
+const nextBtn = document.getElementById('next-btn');
+
+function buildNav(){
+  navEl.innerHTML = '';
+  for(let i=0;i<TOTAL;i++){
+    const b = document.createElement('button');
+    b.className = 'cnav-dot' + (i===cur?' on':'');
+    b.onclick = () => gotoChapter(i);
+    navEl.appendChild(b);
+  }
+}
+
+function gotoChapter(n){
+  if(n===cur||transitioning) return;
+  transitioning = true;
+  const from = document.getElementById('ch'+cur);
+  const to = document.getElementById('ch'+n);
+  from.classList.add('fade-out');
+  setTimeout(()=>{
+    from.classList.remove('active','fade-out');
+    to.classList.add('active','fade-in');
+    cur = n;
+    buildNav();
+    updateLabel();
+    updateNextBtn();
+    transitioning = false;
+    setTimeout(()=>to.classList.remove('fade-in'), 1200);
+  }, 700);
+}
+
+function nextChapter(){
+  if(cur < TOTAL-1) gotoChapter(cur+1);
+}
+
+function updateLabel(){
+  if(cur===0){labelEl.className='';return;}
+  labelEl.textContent = labels[cur];
+  labelEl.className = 'show';
+}
+
+function updateNextBtn(){
+  nextBtn.className = (cur>0 && cur<TOTAL-1) ? 'show' : '';
+  nextBtn.textContent = cur===TOTAL-2 ? 'Close ✦' : 'Continue ↓';
+}
+
+/* ═══════════════════════════════════
+   CEREMONY CAROUSEL
+═══════════════════════════════════ */
+let cerIdx = 0;
+const CER_COUNT = 6;
+
+function buildCerDots(){
+  const d = document.getElementById('cer-dots');
+  d.innerHTML='';
+  for(let i=0;i<CER_COUNT;i++){
+    const b=document.createElement('button');
+    b.className='cer-dot'+(i===cerIdx?' on':'');
+    b.onclick=()=>setCer(i);
+    d.appendChild(b);
+  }
+}
+
+function setCer(i){
+  cerIdx=Math.max(0,Math.min(CER_COUNT-1,i));
+  // Each card is 1/6 of the 600%-wide track = 100vw visually
+  // So moving by index: shift by (100/6)% per step relative to track
+  document.getElementById('cer-track').style.transform=`translateX(calc(-${cerIdx} * (100% / 6)))`;
+  buildCerDots();
+}
+
+function moveCer(dir){ setCer(cerIdx+dir); }
+
+// Touch/swipe
+let touchX=0;
+document.getElementById('ch4').addEventListener('touchstart',e=>touchX=e.touches[0].clientX,{passive:true});
+document.getElementById('ch4').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX - touchX;
+  if(Math.abs(dx)>50) moveCer(dx<0?1:-1);
+},{passive:true});
+
+/* ═══════════════════════════════════
+   RSVP
+═══════════════════════════════════ */
+function doRSVP(){
+  const n=document.getElementById('rn').value.trim();
+  const p=document.getElementById('rp').value.trim();
+  if(!n||!p){alert('Please enter your name and number 🙏');return;}
+  document.getElementById('rok').style.display='block';
+  document.querySelector('.rsvp-submit').textContent='✓ See you there!';
+  document.querySelector('.rsvp-submit').style.borderColor='rgba(13,92,82,0.6)';
+  document.querySelector('.rsvp-submit').style.color='rgba(13,200,150,0.8)';
+}
+
+/* ═══════════════════════════════════
+   KEYBOARD NAV
+═══════════════════════════════════ */
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') nextChapter();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') {if(cur>0)gotoChapter(cur-1);}
+  if(cur===5){ // ceremony chapter
+    if(e.key==='ArrowRight') moveCer(1);
+    if(e.key==='ArrowLeft') moveCer(-1);
+  }
+});
+
+/* ═══════════════════════════════════
+   INIT
+═══════════════════════════════════ */
+function init(){
+  resizeBg(); resizeP(); resizeSc();
+  window.addEventListener('resize',()=>{resizeBg();resizeP();resizeSc();});
+  // Seed particles per chapter
+  setTimeout(()=>{
+    for(let i=0;i<TOTAL;i++) addParticles(i, i===0?30:50);
+  },100);
+  buildNav();
+  setCer(0);
+  loop();
+}
+
+init();
+</script>
+</body>
+</html>

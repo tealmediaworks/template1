@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alina &amp; Andrew — Boarding Pass to Marriage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --sage: #9bb7a1;
+      --sage-dark: #7a9e85;
+      --sage-light: #c8dccf;
+      --sage-faint: #f0f6f2;
+      --cream: #f3ece4;
+      --cream-dark: #e8ddd5;
+      --white: #ffffff;
+      --ink: #4a4a4a;
+      --ink-light: #7a7a7a;
+      --stamp-red: #c0392b;
+      --font-display: 'DM Serif Display', serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-script: 'Great Vibes', cursive;
+    }
+
+    body {
+      background: var(--white);
+      color: var(--ink);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    /* ── SPLASH ── */
+    #splash {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.7s ease, visibility 0.7s;
+    }
+    #splash.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .splash-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 3rem 2.5rem 2.5rem;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .splash-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(90deg, var(--sage) 0 18px, transparent 18px 26px);
+    }
+    .splash-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(90deg, var(--sage) 0 18px, transparent 18px 26px);
+    }
+    .splash-stamp {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 2px solid var(--sage);
+      margin: 0 auto 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--sage);
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      letter-spacing: 0.05em;
+      position: relative;
+    }
+    .splash-stamp svg { width: 44px; height: 44px; }
+    .splash-headline {
+      font-family: var(--font-script);
+      font-size: 2.6rem;
+      color: var(--ink);
+      line-height: 1.1;
+      margin-bottom: 0.6rem;
+    }
+    .splash-sub {
+      font-size: 0.85rem;
+      color: var(--ink-light);
+      line-height: 1.6;
+      margin-bottom: 1.8rem;
+    }
+    .splash-btn {
+      background: var(--sage);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 0.75rem 2rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .splash-btn:hover { background: var(--sage-dark); transform: translateY(-1px); }
+
+    /* ── AUDIO BTN ── */
+    #audio-btn {
+      position: fixed;
+      bottom: 22px; right: 22px;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--sage);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 8000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s, visibility 0.4s, transform 0.2s;
+      box-shadow: 0 4px 14px rgba(155,183,161,0.4);
+    }
+    #audio-btn.show { opacity: 1; visibility: visible; }
+    #audio-btn:hover { transform: scale(1.08); }
+    #audio-btn svg { width: 22px; height: 22px; fill: white; }
+
+    /* ── TICKER ── */
+    .ticker-wrap {
+      background: var(--cream);
+      overflow: hidden;
+      padding: 10px 0;
+      border-top: 1px solid var(--cream-dark);
+      border-bottom: 1px solid var(--cream-dark);
+    }
+    .ticker-track {
+      display: flex;
+      gap: 0;
+      white-space: nowrap;
+      animation: ticker 18s linear infinite;
+    }
+    .ticker-item {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      padding: 0 2.5rem;
+    }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── HERO / BOARDING PASS ── */
+    #hero {
+      background: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle dot grid bg */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, #ddd 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 10vw, 7rem);
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 0.92;
+      text-align: center;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.5s;
+    }
+    .hero-title .italic { font-style: italic; color: var(--sage); }
+    .hero-sub {
+      margin-top: 1.4rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.8s;
+    }
+
+    /* Flight path */
+    .flight-path {
+      margin: 3rem auto 1rem;
+      width: min(480px, 90vw);
+      position: relative;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1s;
+    }
+    .flight-path svg { width: 100%; overflow: visible; }
+    .plane-icon {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translate(-50%, -50%) rotate(-40deg);
+      font-size: 1.4rem;
+      animation: flyPath 3s ease-in-out infinite alternate;
+    }
+    @keyframes flyPath {
+      from { left: 8%; }
+      to   { left: 92%; }
+    }
+
+    .route-labels {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-top: 0.4rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── BOARDING PASS CARD ── */
+    .boarding-pass {
+      margin: 3rem auto 0;
+      max-width: 540px;
+      width: 92%;
+      background: var(--cream);
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1.2s;
+    }
+    .bp-header {
+      background: var(--ink);
+      color: white;
+      padding: 1.4rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .bp-header-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      letter-spacing: 0.04em;
+    }
+    .bp-header-type {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-top: 2px;
+    }
+    .bp-logo {
+      font-family: var(--font-script);
+      font-size: 2rem;
+      opacity: 0.7;
+    }
+    .bp-body {
+      padding: 1.8rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.2rem 1rem;
+    }
+    .bp-field-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 0.3rem;
+    }
+    .bp-field-value {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .bp-field-value.large { font-size: 1.35rem; }
+    .bp-divider {
+      border: none;
+      border-top: 2px dashed var(--cream-dark);
+      margin: 0 2rem;
+    }
+    .bp-footer {
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .bp-barcode {
+      display: flex;
+      gap: 2px;
+      align-items: flex-end;
+    }
+    .bp-barcode span {
+      display: block;
+      background: var(--ink);
+      width: 3px;
+      border-radius: 1px;
+      opacity: 0.7;
+    }
+    .bp-gate-badge {
+      background: var(--sage);
+      color: white;
+      border-radius: 10px;
+      padding: 0.5rem 1.2rem;
+      text-align: center;
+    }
+    .bp-gate-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+    .bp-gate-value {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    /* ── SECTIONS SHARED ── */
+    section { padding: 80px 24px; }
+    .section-inner { max-width: 620px; margin: 0 auto; }
+    .section-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 1.8rem;
+      line-height: 1.1;
+    }
+
+    /* ── INVITE TEXT ── */
+    #invite { background: var(--cream); }
+    .invite-body {
+      font-size: 1.1rem;
+      line-height: 1.85;
+      color: var(--ink-light);
+    }
+    .invite-body em {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.25em;
+      color: var(--ink);
+    }
+
+    /* ── TIMELINE ── */
+    #timeline { background: var(--white); }
+    .timeline-path-wrapper {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline-path-wrapper::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 12px;
+      bottom: 12px;
+      width: 2px;
+      background: repeating-linear-gradient(to bottom, var(--sage) 0 8px, transparent 8px 14px);
+    }
+    .tl-item {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateX(-16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .tl-item.visible { opacity: 1; transform: none; }
+    .tl-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--sage);
+      flex-shrink: 0;
+      margin-top: 4px;
+      margin-left: -2.65rem;
+      border: 3px solid var(--white);
+      box-shadow: 0 0 0 2px var(--sage);
+    }
+    .tl-time {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--sage);
+      min-width: 64px;
+    }
+    .tl-event { font-size: 1.05rem; color: var(--ink-light); padding-top: 4px; }
+
+    /* ── VENUE ── */
+    #venue { background: var(--cream); }
+    .venue-card {
+      background: var(--white);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    .venue-map-placeholder {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, var(--sage-faint) 0%, var(--cream) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .venue-map-placeholder iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+    .venue-info {
+      padding: 1.6rem 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .venue-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--sage-faint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.4rem;
+    }
+    .venue-name { font-family: var(--font-display); font-size: 1.3rem; color: var(--ink); }
+    .venue-address { font-size: 0.9rem; color: var(--ink-light); margin-top: 2px; }
+    .venue-link {
+      display: inline-block;
+      margin-top: 0.4rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sage);
+      text-decoration: none;
+      border-bottom: 1px solid var(--sage-light);
+    }
+
+    /* ── DRESS CODE ── */
+    #dresscode { background: var(--white); }
+    .colors-row {
+      display: flex;
+      gap: 10px;
+      margin: 1.2rem 0 1.8rem;
+      flex-wrap: wrap;
+    }
+    .color-swatch {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 3px solid white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      opacity: 0;
+      transform: scale(0.7);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .color-swatch.visible { opacity: 1; transform: scale(1); }
+    .dresscode-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .dc-card {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 1.4rem;
+    }
+    .dc-card-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .dc-card-body { font-size: 0.9rem; color: var(--ink-light); line-height: 1.6; }
+
+    /* ── ORGANISATIONAL ── */
+    #org { background: var(--cream); }
+    .org-item {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 1.5rem 1.8rem;
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .org-item.visible { opacity: 1; transform: none; }
+    .org-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+      width: 40px;
+      text-align: center;
+    }
+    .org-title { font-family: var(--font-display); font-size: 1.1rem; color: var(--ink); margin-bottom: 0.3rem; }
+    .org-body { font-size: 0.92rem; color: var(--ink-light); line-height: 1.65; }
+
+    /* ── RSVP ── */
+    #rsvp { background: var(--white); }
+    .rsvp-inner {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .rsvp-card {
+      background: var(--cream);
+      border-radius: 16px;
+      padding: 2.4rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .rsvp-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: var(--sage);
+    }
+    .rsvp-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--ink);
+      margin-bottom: 0.3rem;
+    }
+    .rsvp-sub {
+      font-size: 0.85rem;
+      color: var(--ink-light);
+      margin-bottom: 1.8rem;
+    }
+    .form-row { margin-bottom: 1.1rem; }
+    .form-label {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 0.4rem;
+    }
+    .form-input {
+      width: 100%;
+      padding: 0.72rem 1rem;
+      border: 1.5px solid var(--cream-dark);
+      border-radius: 8px;
+      background: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { border-color: var(--sage); }
+    .radio-row { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+    .radio-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      font-size: 0.88rem;
+      color: var(--ink);
+      background: var(--white);
+      border: 1.5px solid var(--cream-dark);
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      user-select: none;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .radio-pill:has(input:checked) {
+      background: var(--sage);
+      color: white;
+      border-color: var(--sage);
+    }
+    .radio-pill input { display: none; }
+    .btn-rsvp {
+      width: 100%;
+      padding: 0.88rem;
+      background: var(--ink);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-rsvp:hover { background: var(--sage-dark); transform: translateY(-1px); }
+    .rsvp-success {
+      display: none;
+      text-align: center;
+      padding: 1rem 0 0.5rem;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--sage-dark);
+    }
+
+    /* ── CLOSING ── */
+    #closing {
+      background: var(--ink);
+      color: white;
+      text-align: center;
+      padding: 80px 24px 100px;
+    }
+    .closing-script {
+      font-family: var(--font-script);
+      font-size: clamp(2.5rem, 7vw, 4rem);
+      color: rgba(255,255,255,0.9);
+      line-height: 1;
+      margin-bottom: 0.6rem;
+    }
+    .closing-date {
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+    .closing-tagline {
+      margin-top: 2rem;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--sage-light);
+    }
+
+    /* ── SCROLL FADE ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 520px) {
+      .bp-body { grid-template-columns: 1fr 1fr; }
+      .dresscode-cards { grid-template-columns: 1fr; }
+      section { padding: 60px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-card">
+    <div class="splash-stamp">
+      <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="22" r="20" stroke="#9bb7a1" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="22" y="17" text-anchor="middle" font-family="DM Serif Display, serif" font-size="7" fill="#9bb7a1">E &amp; M</text>
+        <text x="22" y="28" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="4.5" fill="#9bb7a1" letter-spacing="1">MEXICO</text>
+        <text x="22" y="36" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="4" fill="#9bb7a1" letter-spacing="0.5">05.05.25</text>
+      </svg>
+    </div>
+    <div class="splash-headline">You're Invited!</div>
+    <p class="splash-sub">Join us in making this day unforgettable!<br/>Alina &amp; Andrew are getting married.</p>
+    <button class="splash-btn" id="splash-enter">Discover the Details</button>
+  </div>
+</div>
+
+<!-- AUDIO -->
+<audio id="bg-audio" loop>
+  <source src="https://dl.dropboxusercontent.com/scl/fi/ax9m2vf0b9felhibvksow/Stephen-Sanchez-Until-I-Found-You-Official-Video-GxldQ9eX2wo.mp3?rlkey=l9cbkv01nzm0scxti8il1719p&st=7ukkvg5q" type="audio/mp3" />
+</audio>
+<button id="audio-btn" aria-label="Toggle music">
+  <svg id="icon-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+  <svg id="icon-play" viewBox="0 0 24 24" style="display:none;"><polygon points="5,3 19,12 5,21"/></svg>
+</button>
+
+<!-- MAIN -->
+<main id="main">
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker-track" id="ticker">
+      <span class="ticker-item">Boarding Pass ✈</span>
+      <span class="ticker-item">Alina &amp; Andrew</span>
+      <span class="ticker-item">Destination: Mexico ✈</span>
+      <span class="ticker-item">05 · 05 · 25 ✈</span>
+      <span class="ticker-item">Casa Karma ✈</span>
+      <span class="ticker-item">Passport to Marriage ✈</span>
+      <span class="ticker-item">Boarding Pass ✈</span>
+      <span class="ticker-item">Alina &amp; Andrew</span>
+      <span class="ticker-item">Destination: Mexico ✈</span>
+      <span class="ticker-item">05 · 05 · 25 ✈</span>
+      <span class="ticker-item">Casa Karma ✈</span>
+      <span class="ticker-item">Passport to Marriage ✈</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <p class="hero-eyebrow">Passport to Marriage</p>
+    <h1 class="hero-title">
+      Alina<br/>
+      <span class="italic">&amp; Andrew</span>
+    </h1>
+    <p class="hero-sub">Are getting married!</p>
+
+    <!-- Flight path SVG -->
+    <div class="flight-path">
+      <div class="plane-icon">✈</div>
+      <svg viewBox="0 0 480 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 50 Q120 10 240 30 Q360 50 470 15"
+              stroke="#9bb7a1" stroke-width="2" stroke-dasharray="8 5"
+              stroke-linecap="round"/>
+        <circle cx="10" cy="50" r="4" fill="#9bb7a1"/>
+        <circle cx="470" cy="15" r="4" fill="#9bb7a1"/>
+      </svg>
+      <div class="route-labels">
+        <span>Your Home ✈</span>
+        <span>✈ Mexico</span>
+      </div>
+    </div>
+
+    <!-- Boarding Pass Card -->
+    <div class="boarding-pass">
+      <div class="bp-header">
+        <div>
+          <div class="bp-header-title">Boarding Pass</div>
+          <div class="bp-header-type">Wedding Invitation — First Class</div>
+        </div>
+        <div class="bp-logo">E&amp;M</div>
+      </div>
+      <div class="bp-body">
+        <div>
+          <div class="bp-field-label">Type</div>
+          <div class="bp-field-value">WEDDING</div>
+        </div>
+        <div>
+          <div class="bp-field-label">Code</div>
+          <div class="bp-field-value">MEXICO</div>
+        </div>
+        <div>
+          <div class="bp-field-label">Passport</div>
+          <div class="bp-field-value">050525</div>
+        </div>
+        <div>
+          <div class="bp-field-label">Passenger</div>
+          <div class="bp-field-value large">You</div>
+        </div>
+        <div>
+          <div class="bp-field-label">Date</div>
+          <div class="bp-field-value">Mon May 5, 2025</div>
+        </div>
+        <div>
+          <div class="bp-field-label">Destination</div>
+          <div class="bp-field-value">Casa Karma</div>
+        </div>
+      </div>
+      <hr class="bp-divider"/>
+      <div class="bp-footer">
+        <div class="bp-barcode" aria-hidden="true">
+          <span style="height:40px"></span><span style="height:32px"></span><span style="height:44px"></span>
+          <span style="height:28px"></span><span style="height:40px"></span><span style="height:36px"></span>
+          <span style="height:44px"></span><span style="height:30px"></span><span style="height:42px"></span>
+          <span style="height:26px"></span><span style="height:38px"></span><span style="height:34px"></span>
+          <span style="height:44px"></span><span style="height:30px"></span><span style="height:40px"></span>
+        </div>
+        <div style="text-align:right; font-size:0.75rem; color:var(--ink-light); letter-spacing:0.12em; text-transform:uppercase;">
+          <div>2:00 PM – 10:00 PM</div>
+          <div>Puerto Vallarta, MX</div>
+        </div>
+        <div class="bp-gate-badge">
+          <div class="bp-gate-label">Gate</div>
+          <div class="bp-gate-value">♥</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INVITE -->
+  <section id="invite">
+    <div class="section-inner fade-up">
+      <div class="section-tag">You're Invited</div>
+      <h2 class="section-title">Pack your bags & join us!</h2>
+      <p class="invite-body">
+        <em>Pack your bags, fasten your seatbelts,</em> and get ready for our greatest adventure!<br/><br/>
+        We are overjoyed to invite you to share in the celebration of our love. Your presence on this special day means the world to us — we can't wait to celebrate with you.
+      </p>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline">
+    <div class="section-inner">
+      <div class="section-tag fade-up">Event Timeline</div>
+      <h2 class="section-title fade-up">Flight Plan for the Day</h2>
+      <div class="timeline-path-wrapper">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-time">2:00</div>
+          <div class="tl-event">Wedding Ceremony</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-time">2:30</div>
+          <div class="tl-event">Photos</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-time">3:00</div>
+          <div class="tl-event">Drinks Reception</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-time">5:00</div>
+          <div class="tl-event">Dinner</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-time">7:00</div>
+          <div class="tl-event">Games &amp; Fun</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-time">7:30</div>
+          <div class="tl-event">Dance Party until 10 PM</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VENUE -->
+  <section id="venue">
+    <div class="section-inner fade-up">
+      <div class="section-tag">The Destination</div>
+      <h2 class="section-title">Wedding Venue</h2>
+      <div class="venue-card">
+        <div class="venue-map-placeholder">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3735.0316169000253!2d-105.244597!3d20.5867664!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x84215b96f9a1a8e1%3A0x7c2ab6c835e5220a!2sCasa%20Karma%20Private%20Villa%20%26%20Event%20Space!5e0!3m2!1sen!2see!4v1741454416763!5m2!1sen!2see"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Casa Karma map"
+            aria-label="Map of Casa Karma">
+          </iframe>
+        </div>
+        <div class="venue-info">
+          <div class="venue-icon">🌴</div>
+          <div>
+            <div class="venue-name">Casa Karma</div>
+            <div class="venue-address">Puerto Vallarta, Mexico</div>
+            <a href="https://www.google.com/maps/search/Casa+Karma+Puerto+Vallarta" target="_blank" rel="noopener" class="venue-link">Open in Maps</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DRESS CODE -->
+  <section id="dresscode">
+    <div class="section-inner fade-up">
+      <div class="section-tag">Dress Code</div>
+      <h2 class="section-title">What to Wear</h2>
+      <p style="color:var(--ink-light); font-size:1rem; line-height:1.7; margin-bottom:1rem;">
+        We would be very happy if your outfit is in the colours of the wedding theme.
+      </p>
+      <div class="colors-row" id="swatches">
+        <div class="color-swatch" style="background:#faf1db" title="Soft Yellow"></div>
+        <div class="color-swatch" style="background:#f5d9b1" title="Warm Sand"></div>
+        <div class="color-swatch" style="background:#f2cac9" title="Blush Pink"></div>
+        <div class="color-swatch" style="background:#afcff1" title="Powder Blue"></div>
+        <div class="color-swatch" style="background:#7ebbfa" title="Sky Blue"></div>
+        <div class="color-swatch" style="background:#9bb7a1" title="Sage Green"></div>
+      </div>
+      <div class="dresscode-cards">
+        <div class="dc-card">
+          <div class="dc-card-title">Ladies</div>
+          <div class="dc-card-body">Elegant summer dresses in pastel tones. A hat &amp; sunglasses are recommended for comfort.</div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-card-title">Gentlemen</div>
+          <div class="dc-card-body">Suits or shirts in classic shades — grey, blue, brown, and beige are great choices!</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORG DETAILS -->
+  <section id="org">
+    <div class="section-inner">
+      <div class="section-tag fade-up">Organisational Aspects</div>
+      <h2 class="section-title fade-up">Good to Know</h2>
+      <div class="org-item">
+        <div class="org-icon">🎁</div>
+        <div>
+          <div class="org-title">Gifts</div>
+          <div class="org-body">Your presence is our greatest gift. However, if you wish to give a present, a contribution toward our honeymoon or future home would be deeply appreciated.</div>
+        </div>
+      </div>
+      <div class="org-item">
+        <div class="org-icon">🚗</div>
+        <div>
+          <div class="org-title">Getting There</div>
+          <div class="org-body">Casa Karma is easily accessible from Puerto Vallarta International Airport. We recommend arranging transport in advance. Details will be provided closer to the date.</div>
+        </div>
+      </div>
+      <div class="org-item">
+        <div class="org-icon">🏨</div>
+        <div>
+          <div class="org-title">Accommodation</div>
+          <div class="org-body">We've reserved rooms at nearby hotels for guests travelling from afar. Contact us directly for booking codes and recommendations.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP -->
+  <section id="rsvp">
+    <div class="rsvp-inner">
+      <div class="section-tag fade-up" style="text-align:center;">Your Ticket to Love</div>
+      <h2 class="section-title fade-up" style="text-align:center;">Book Your Seat</h2>
+      <p class="fade-up" style="text-align:center; color:var(--ink-light); margin-bottom:2rem; font-size:0.95rem;">RSVP now to secure your spot and help us plan the perfect experience for you.</p>
+
+      <div class="rsvp-card fade-up">
+        <div class="rsvp-title">RSVP</div>
+        <div class="rsvp-sub">Please respond before March 20</div>
+
+        <form id="rsvp-form" novalidate>
+          <div class="form-row">
+            <label class="form-label" for="rsvp-name">Your Name</label>
+            <input class="form-input" type="text" id="rsvp-name" placeholder="Full name" required />
+          </div>
+          <div class="form-row">
+            <label class="form-label">Will you come?</label>
+            <div class="radio-row">
+              <label class="radio-pill"><input type="radio" name="att" value="yes" required /> Yes, I will ✈</label>
+              <label class="radio-pill"><input type="radio" name="att" value="no" /> Unfortunately, I cannot :(</label>
+              <label class="radio-pill"><input type="radio" name="att" value="later" /> I'll tell you later</label>
+            </div>
+          </div>
+          <div class="form-row">
+            <label class="form-label" for="rsvp-food">Food Intolerances?</label>
+            <input class="form-input" type="text" id="rsvp-food" placeholder="e.g. vegetarian, nut allergy…" />
+          </div>
+          <button type="submit" class="btn-rsvp">Submit — Confirm Your Seat</button>
+        </form>
+        <div class="rsvp-success" id="rsvp-success">Thank you! We can't wait to celebrate with you 🌴</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section id="closing">
+    <div class="closing-script">Hope to see you there</div>
+    <p style="font-family:var(--font-display); font-size:1.6rem; color:rgba(255,255,255,0.75); margin-top:0.4rem;">Alina &amp; Andrew</p>
+    <p class="closing-date">05 · 05 · 2025 · Mexico</p>
+    <p class="closing-tagline">Our greatest adventure begins.</p>
+  </section>
+
+</main>
+
+<script>
+  /* ── SPLASH ── */
+  const splash = document.getElementById('splash');
+  const enterBtn = document.getElementById('splash-enter');
+  const audio = document.getElementById('bg-audio');
+  const audioBtn = document.getElementById('audio-btn');
+  const iconPlay = document.getElementById('icon-play');
+  const iconPause = document.getElementById('icon-pause');
+
+  enterBtn.addEventListener('click', () => {
+    splash.classList.add('gone');
+    audio.muted = false;
+    audio.play().then(() => {
+      iconPlay.style.display = 'none';
+      iconPause.style.display = 'block';
+    }).catch(() => {});
+    audioBtn.classList.add('show');
+  });
+
+  /* ── AUDIO ── */
+  audioBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      iconPlay.style.display = 'none';
+      iconPause.style.display = 'block';
+    } else {
+      audio.pause();
+      iconPlay.style.display = 'block';
+      iconPause.style.display = 'none';
+    }
+  });
+
+  /* ── INTERSECTION OBSERVER ── */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-up, .tl-item, .org-item').forEach(el => io.observe(el));
+
+  // Stagger color swatches
+  const swatchObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const swatches = e.target.querySelectorAll('.color-swatch');
+        swatches.forEach((s, i) => {
+          setTimeout(() => s.classList.add('visible'), i * 80);
+        });
+        swatchObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  const swatchRow = document.getElementById('swatches');
+  if (swatchRow) swatchObserver.observe(swatchRow.parentElement);
+
+  /* ── RSVP ── */
+  document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('rsvp-name').value.trim();
+    const att  = this.att.value;
+    if (!name || !att) { alert('Please fill in your name and attendance.'); return; }
+    this.style.display = 'none';
+    document.getElementById('rsvp-success').style.display = 'block';
+    // Add your backend POST here, e.g. Formspree or EmailJS
+  });
+</script>
+</body>
+</html>
