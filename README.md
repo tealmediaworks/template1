@@ -1,14 +1,14 @@
 # Luxury Wedding Invitation Website Template
 
-A premium, mobile-first wedding invitation website designed for modern couples. Create and share elegant digital wedding invitations with beautiful animations, countdown timers, photo galleries, RSVP management, and background music support.
+A premium wedding invitation website template designed for modern couples. Create beautiful digital wedding invitations with elegant design, responsive layouts, countdown timers, galleries, RSVP sections, and more.
 
 ## ✨ Features
 
-* Fully mobile responsive design
-* Elegant wedding invitation landing page
-* Live countdown timer
-* Photo gallery section
-* RSVP section for guest responses
+* Fully responsive design
+* Elegant invitation landing page
+* Wedding countdown timer
+* Photo gallery
+* RSVP section
 * Background music support
 * Smooth animations and transitions
 * Fast-loading static website
@@ -22,7 +22,7 @@ A premium, mobile-first wedding invitation website designed for modern couples. 
 
 ## 🚀 Deployment
 
-This template can be deployed on:
+This project can be deployed on:
 
 * GitHub Pages
 * Vercel
@@ -42,7 +42,7 @@ This template can be deployed on:
 
 ## 🎨 Customization
 
-You can easily customize:
+Customize the following to match your event:
 
 * Couple names
 * Wedding date and time
@@ -60,14 +60,6 @@ You can easily customize:
 * Edge
 * Mobile browsers (iOS & Android)
 
-## 🏢 About
+## 📄 License
 
-Built with ❤️ by Teal Media Works.
-
-We create beautiful digital invitations, wedding websites, event microsites, and custom web experiences for modern celebrations.
-
-## 📧 Contact
-
-Website: https://tealmediaworks.in
-
-For custom wedding websites, invitation templates, or event microsites, get in touch with Teal Media Works.
+This template is provided for personal and commercial use. Please review the license terms before redistribution.
