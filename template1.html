@@ -6,10 +6,9 @@
   <title>Aryan &amp; Tanisha — Wedding Day</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
 
   <style>
-    /* ── RESET & BASE ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
@@ -18,9 +17,8 @@
       --burgundy-dark: #4a0016;
       --burgundy-light: #8a1035;
       --cream: #fffaf8;
-      --cream-dark: #f5ede8;
+      --cream-dark: #f0e8e2;
       --text-dark: #3a3a3a;
-      --text-light: #fffaf8;
       --gold: #c9a96e;
       --font-display: 'Cinzel', serif;
       --font-body: 'Cormorant Garamond', serif;
@@ -28,14 +26,14 @@
     }
 
     body {
-      background-color: var(--burgundy);
-      color: var(--text-light);
+      background: var(--burgundy);
+      color: var(--cream);
       font-family: var(--font-body);
       overflow-x: hidden;
     }
 
-    /* ── SPLASH / HERO ── */
-    .splash {
+    /* ─── SPLASH ─── */
+    #splash {
       position: fixed;
       inset: 0;
       background: var(--burgundy);
@@ -44,338 +42,323 @@
       align-items: center;
       justify-content: center;
       z-index: 1000;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
+      transition: opacity 0.9s ease, visibility 0.9s ease;
+      overflow: hidden;
     }
-    .splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    #splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
-    .splash-monogram {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 2rem;
-      animation: pulse-ring 2.5s ease-in-out infinite;
-      cursor: pointer;
-      transition: transform 0.3s ease, border-color 0.3s ease;
-      position: relative;
-    }
-    .splash-monogram::before {
-      content: '';
+    /* Polygon panels - left and right half-frames */
+    .splash-panel {
       position: absolute;
-      inset: -8px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.12);
+      top: 0; bottom: 0;
+      width: 50%;
+      background: rgba(0,0,0,0.18);
+      transition: transform 2.2s cubic-bezier(0.77,0,0.18,1);
     }
-    .splash-monogram:hover { transform: scale(1.05); border-color: rgba(255,255,255,0.6); }
-    .splash-monogram svg { width: 80px; height: 80px; }
+    .splash-panel-left { left: 0; clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%); }
+    .splash-panel-right { right: 0; clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%); }
+    #splash.hidden .splash-panel-left { transform: translateX(-105%); }
+    #splash.hidden .splash-panel-right { transform: translateX(105%); }
+
+    .splash-inner {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .splash-label {
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 1rem;
+    }
 
     .splash-names {
       font-family: var(--font-display);
-      font-size: clamp(2rem, 6vw, 3.5rem);
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      text-align: center;
-      line-height: 1.1;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 500;
+      line-height: 0.85;
+      letter-spacing: 0.04em;
       color: var(--cream);
     }
-    .schedule-desc{
-      color:rgba(255,255,255,.55);
-      font-size:.95rem;
-      margin-top:4px;
-      line-height:1.5;
-    }
-    .splash-names .ampersand {
+    .splash-and {
+      display: block;
       font-family: var(--font-body);
       font-style: italic;
-      font-size: 0.7em;
-      display: block;
-      margin: 0.2em 0;
-      color: rgba(255,255,255,0.6);
-      letter-spacing: 0.05em;
+      font-size: 0.3em;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.12em;
+      margin: 0.5em 0;
+      font-weight: 300;
     }
+
     .splash-date {
       font-family: var(--font-sans);
-      font-size: 0.85rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      margin-top: 1.2rem;
-    }
-    .splash-cta {
-      margin-top: 2.5rem;
-      font-family: var(--font-sans);
       font-size: 0.75rem;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.35em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.45);
+      margin-top: 1.5rem;
+    }
+
+    .splash-btn {
+      margin-top: 3rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+      animation: pulse-btn 2.5s ease-in-out infinite;
+    }
+    .splash-btn:hover { transform: scale(1.08); background: rgba(255,255,255,0.18); }
+    .splash-btn-label {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-top: 0.8rem;
       animation: blink 2s ease-in-out infinite;
     }
 
-    @keyframes blink { 0%,100%{opacity:0.45} 50%{opacity:1} }
-    @keyframes pulse-ring {
+    @keyframes pulse-btn {
       0%,100%{ box-shadow: 0 0 0 0 rgba(255,255,255,0.15); }
-      50%{ box-shadow: 0 0 0 12px rgba(255,255,255,0); }
+      50%{ box-shadow: 0 0 0 14px rgba(255,255,255,0); }
     }
+    @keyframes blink { 0%,100%{opacity:0.4} 50%{opacity:1} }
 
-    /* ── AUDIO BUTTON ── */
+    /* ─── AUDIO ─── */
     #audio-btn {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      width: 52px;
-      height: 52px;
+      bottom: 24px; right: 24px;
+      width: 52px; height: 52px;
       border-radius: 50%;
       background: var(--burgundy-dark);
       border: 1px solid rgba(255,255,255,0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       cursor: pointer;
       z-index: 900;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.2s ease;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.4s, visibility 0.4s, transform 0.2s;
     }
     #audio-btn.visible { opacity: 1; visibility: visible; }
     #audio-btn:hover { transform: scale(1.08); }
-    #audio-btn svg { width: 22px; height: 22px; fill: var(--cream); }
+    #audio-btn svg { width: 20px; height: 20px; fill: var(--cream); }
 
-    /* ── MAIN CONTENT ── */
-    main { opacity: 0; transition: opacity 0.6s ease; }
+    /* ─── MAIN ─── */
+    main { opacity: 0; transition: opacity 0.7s ease; }
     main.visible { opacity: 1; }
 
-    /* ── DIVIDER ORNAMENT ── */
-    .ornament {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      margin: 0 auto;
-      width: 100%;
-      max-width: 500px;
-    }
-    .ornament-line {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(to right, transparent, currentColor);
-      opacity: 0.3;
-    }
-    .ornament-line:last-child { background: linear-gradient(to left, transparent, currentColor); }
-    .ornament-diamond {
-      width: 6px;
-      height: 6px;
-      background: currentColor;
-      transform: rotate(45deg);
-      opacity: 0.5;
-      flex-shrink: 0;
-    }
-    .ornament-text {
-      font-family: var(--font-body);
-      font-style: italic;
-      font-size: 1.1rem;
-      letter-spacing: 0.08em;
-      opacity: 0.65;
-      white-space: nowrap;
-    }
-
-    /* ── SECTION BASE ── */
-    section { padding: 80px 24px; }
-    .section-inner { max-width: 680px; margin: 0 auto; }
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    /* ── HERO SECTION ── */
+    /* ─── HERO ─── */
     #hero {
       min-height: 100vh;
+      background: var(--burgundy);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 100px 24px 80px;
+      padding: 80px 24px;
       position: relative;
-      background: var(--burgundy);
       overflow: hidden;
     }
     #hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(138,16,53,0.4) 0%, transparent 70%);
+      background: radial-gradient(ellipse 70% 55% at 50% 45%, rgba(138,16,53,0.5) 0%, transparent 70%);
       pointer-events: none;
     }
 
+    /* Decorative corner shapes */
+    .hero-corner {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.15;
+    }
+    .hero-corner svg { fill: var(--cream); }
+    .hero-corner-tl { top: 0; left: 0; transform: rotate(0deg); }
+    .hero-corner-tr { top: 0; right: 0; transform: rotate(90deg); }
+    .hero-corner-bl { bottom: 0; left: 0; transform: rotate(270deg); }
+    .hero-corner-br { bottom: 0; right: 0; transform: rotate(180deg); }
+
     .hero-label {
       font-family: var(--font-sans);
-      font-size: 0.7rem;
-      letter-spacing: 0.4em;
+      font-size: 0.62rem;
+      letter-spacing: 0.5em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.45);
       margin-bottom: 1.5rem;
       opacity: 0;
-      animation: fadeUp 1s ease forwards 0.3s;
+      animation: fadeUp 1s ease forwards 0.4s;
     }
     .hero-names {
       font-family: var(--font-display);
-      font-size: clamp(3.5rem, 12vw, 8rem);
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      line-height: 0.9;
+      font-size: clamp(4rem, 14vw, 9rem);
+      font-weight: 500;
+      line-height: 0.85;
+      letter-spacing: 0.04em;
       color: var(--cream);
       opacity: 0;
-      animation: fadeUp 1.2s ease forwards 0.6s;
+      animation: fadeUp 1.2s ease forwards 0.7s;
     }
     .hero-names .and {
       display: block;
       font-family: var(--font-body);
       font-style: italic;
-      font-size: 0.35em;
-      color: rgba(255,255,255,0.5);
-      letter-spacing: 0.1em;
-      margin: 0.4em 0;
+      font-size: 0.28em;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.12em;
+      margin: 0.55em 0;
       font-weight: 300;
     }
     .hero-date {
       font-family: var(--font-sans);
-      font-size: 0.9rem;
+      font-size: 0.78rem;
       letter-spacing: 0.35em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.5);
       margin-top: 2rem;
       opacity: 0;
-      animation: fadeUp 1s ease forwards 0.9s;
+      animation: fadeUp 1s ease forwards 1s;
     }
-    .hero-ornament {
+    .hero-line {
+      width: 1px;
+      height: 60px;
+      background: rgba(255,255,255,0.25);
       margin: 2rem auto 0;
-      color: var(--cream);
       opacity: 0;
-      animation: fadeUp 1s ease forwards 1.1s;
+      animation: fadeUp 1s ease forwards 1.2s;
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from { opacity:0; transform:translateY(28px); }
+      to   { opacity:1; transform:translateY(0); }
     }
 
-    /* ── GREETING ── */
-    #greeting {
-      background: var(--burgundy);
-      text-align: center;
-      padding-top: 0;
+    /* ─── WAVE DIVIDER ─── */
+    .wave-divider {
+      width: 100%;
+      line-height: 0;
+      display: block;
     }
+    .wave-divider svg { display: block; width: 100%; }
+
+    /* ─── SECTION BASE ─── */
+    section { padding: 80px 24px; }
+    .section-inner { max-width: 700px; margin: 0 auto; }
+
+    .section-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.1;
+    }
+
+    /* Ornament */
+    .ornament {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1rem; max-width: 420px; margin: 0 auto 2.5rem;
+    }
+    .ornament-line { flex:1; height:1px; background:rgba(255,255,255,0.2); }
+    .ornament-line.dark { background:rgba(58,58,58,0.18); }
+    .ornament-diamond {
+      width: 5px; height: 5px;
+      background: currentColor; transform: rotate(45deg);
+      flex-shrink: 0; opacity: 0.45;
+    }
+
+    /* ─── GREETING ─── */
+    #greeting { background: var(--burgundy); text-align: center; }
     .greeting-text {
-      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-      line-height: 1.8;
-      color: rgba(255,255,255,0.82);
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      line-height: 1.9;
+      color: rgba(255,255,255,0.78);
       font-weight: 300;
     }
     .greeting-text strong {
       font-family: var(--font-display);
-      font-size: 1.15em;
-      font-weight: 400;
+      font-size: 1.1em;
+      font-weight: 500;
       color: var(--cream);
     }
 
-    /* ── COUNTDOWN ── */
-    #countdown-section {
-      background: var(--cream);
-      color: var(--text-dark);
-      text-align: center;
-    }
+    /* ─── COUNTDOWN ─── */
+    #countdown-section { background: var(--cream); color: var(--text-dark); text-align: center; }
     #countdown-section .section-title { color: var(--text-dark); }
-    #countdown-section .ornament { color: var(--text-dark); }
+    #countdown-section .ornament-line { background: rgba(58,58,58,0.18); }
+    #countdown-section .ornament-diamond { color: var(--text-dark); }
+    #countdown-section .section-eyebrow { color: var(--burgundy-light); }
 
     .countdown-grid {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 0;
-      margin-top: 2.5rem;
-      flex-wrap: wrap;
+      display: flex; justify-content: center; align-items: flex-end;
+      gap: 0; margin-top: 2.5rem; flex-wrap: wrap;
     }
-    .countdown-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 80px;
-    }
+    .countdown-item { display: flex; flex-direction: column; align-items: center; min-width: 90px; }
     .countdown-num {
       font-family: var(--font-body);
-      font-size: clamp(2.8rem, 8vw, 5rem);
+      font-size: clamp(3rem, 9vw, 5.5rem);
       font-weight: 300;
       color: var(--burgundy);
       line-height: 1;
     }
     .countdown-label {
       font-family: var(--font-sans);
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       letter-spacing: 0.25em;
       text-transform: uppercase;
-      color: rgba(58,58,58,0.55);
-      margin-top: 0.4rem;
+      color: rgba(58,58,58,0.5);
+      margin-top: 0.5rem;
     }
     .countdown-sep {
       font-family: var(--font-body);
-      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-size: clamp(2.5rem, 6vw, 4rem);
       font-weight: 300;
       color: var(--burgundy);
-      opacity: 0.3;
+      opacity: 0.2;
       padding: 0 4px;
-      padding-bottom: 1.8rem;
-      align-self: flex-end;
+      padding-bottom: 1.5rem;
     }
 
-    <section id="our-story">
-     <div class="section-inner">
-        <img src="your-image.jpg" class="story-photo">
-  
-        <h2 class="section-title">Our Story</h2>
-  
-        <p class="greeting-text">
-           Every love story is beautiful,
-           but ours is our favourite.
-        </p>
-     </div>
-    </section>
-    
-    /* ── SCHEDULE ── */
-    #schedule {
-      background: var(--burgundy);
-      text-align: center;
-    }
-    .schedule-list {
-      list-style: none;
-      margin-top: 2.5rem;
-      position: relative;
-      padding: 0;
-    }
+    /* ─── SCHEDULE ─── */
+    #schedule { background: var(--burgundy); text-align: center; }
+
+    .schedule-list { list-style:none; position:relative; margin-top: 3rem; max-width: 500px; margin-left:auto; margin-right:auto; }
     .schedule-list::before {
       content: '';
       position: absolute;
-      left: 50%;
-      top: 12px;
-      bottom: 12px;
+      left: 50%; top: 12px; bottom: 12px;
       width: 1px;
-      background: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.15);
       transform: translateX(-50%);
     }
     .schedule-item {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      margin-bottom: 2.5rem;
-      position: relative;
-      opacity: 0;
-      transform: translateY(20px);
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-bottom: 2.5rem; position: relative;
+      opacity: 0; transform: translateY(20px);
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
     .schedule-item.visible { opacity: 1; transform: none; }
@@ -383,60 +366,100 @@
 
     .schedule-time {
       font-family: var(--font-display);
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 500;
       color: var(--cream);
       min-width: 80px;
       text-align: right;
+      flex-shrink: 0;
     }
     .schedule-dot {
-      width: 10px;
-      height: 10px;
+      width: 10px; height: 10px;
       background: var(--cream);
       border-radius: 50%;
       flex-shrink: 0;
-      position: relative;
-      z-index: 1;
-      opacity: 0.7;
+      position: relative; z-index: 1;
+      opacity: 0.55;
     }
-    .schedule-event {
-      text-align: left;
-      min-width: 140px;
-    }
+    .schedule-event { text-align: left; }
     .schedule-event-name {
       font-family: var(--font-body);
-      font-size: 1.1rem;
-      color: rgba(255,255,255,0.85);
-      line-height: 1.3;
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.88);
+      font-weight: 400;
+    }
+    .schedule-event-desc {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 2px;
+      line-height: 1.4;
     }
 
-    /* ── LOCATION ── */
-    #location {
-      background: var(--cream);
-      color: var(--text-dark);
-      text-align: center;
-    }
+    /* ─── LOCATION ─── */
+    #location { background: var(--cream); color: var(--text-dark); text-align: center; }
     #location .section-title { color: var(--text-dark); }
-    #location .ornament { color: var(--text-dark); }
+    #location .section-eyebrow { color: var(--burgundy-light); }
+
+    .venue-frame {
+      width: 100%;
+      max-width: 480px;
+      margin: 2rem auto;
+      position: relative;
+      border-radius: 2px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #e8d5ce 0%, var(--cream-dark) 100%);
+    }
+    .venue-frame::before {
+      content: '';
+      display: block;
+      padding-top: 55%;
+    }
+    .venue-frame-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(102,2,31,0.12);
+    }
+    .venue-frame-inner svg { opacity: 0.18; margin-bottom: 0.5rem; }
+    .venue-frame-placeholder {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--burgundy);
+      opacity: 0.4;
+      letter-spacing: 0.1em;
+    }
+    /* If real image provided */
+    .venue-frame img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
     .venue-name {
       font-family: var(--font-display);
-      font-size: clamp(1.4rem, 4vw, 2rem);
-      font-weight: 400;
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
       color: var(--burgundy);
-      margin: 1.5rem 0 0.5rem;
+      font-weight: 400;
+      margin-bottom: 0.4rem;
     }
     .venue-address {
       font-family: var(--font-body);
       font-size: 1.05rem;
-      color: rgba(58,58,58,0.65);
+      color: rgba(58,58,58,0.6);
       line-height: 1.6;
     }
     .map-link {
       display: inline-block;
-      margin-top: 1.5rem;
+      margin-top: 1.2rem;
       font-family: var(--font-sans);
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       letter-spacing: 0.25em;
       text-transform: uppercase;
       color: var(--burgundy);
@@ -445,176 +468,146 @@
       padding-bottom: 2px;
       transition: opacity 0.2s;
     }
-    .map-link:hover { opacity: 0.6; }
+    .map-link:hover { opacity: 0.55; }
 
-    .venue-img {
-      width: 100%;
-      max-width: 480px;
-      height: 240px;
-      object-fit: cover;
-      border-radius: 4px;
-      margin-top: 2rem;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      background: var(--cream-dark);
-    }
-    /* Placeholder styling when no real image */
-    .venue-placeholder {
-      width: 100%;
-      max-width: 480px;
-      height: 220px;
-      background: linear-gradient(135deg, var(--cream-dark) 0%, #e8d5ce 100%);
-      border-radius: 4px;
-      margin: 2rem auto 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .venue-placeholder span {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      color: var(--burgundy);
-      opacity: 0.5;
-      letter-spacing: 0.1em;
-    }
+    /* ─── DRESS CODE ─── */
+    #dresscode { background: var(--burgundy); text-align: center; }
 
-    /* ── DRESS CODE ── */
-    #dresscode {
-      background: var(--burgundy);
-      text-align: center;
-    }
-    .dresscode-intro {
-      font-size: 1.1rem;
-      line-height: 1.75;
-      color: rgba(255,255,255,0.78);
-      max-width: 480px;
-      margin: 0 auto 2.5rem;
-    }
     .dresscode-cards {
-      display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 1rem;
+      display: flex; gap: 1.5rem; justify-content: center;
+      flex-wrap: wrap; margin-top: 2rem;
     }
     .dresscode-card {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 8px;
-      padding: 2rem 1.5rem;
-      max-width: 220px;
-      text-align: left;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      padding: 2rem 1.75rem;
+      max-width: 240px; min-width: 190px;
       flex: 1;
-      min-width: 180px;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .dresscode-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    }
+    .dresscode-card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.75rem;
+      display: block;
     }
     .dresscode-card-title {
       font-family: var(--font-display);
       font-size: 1rem;
       letter-spacing: 0.1em;
       color: var(--cream);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.6rem;
     }
     .dresscode-card-body {
       font-size: 0.95rem;
-      color: rgba(255,255,255,0.65);
-      line-height: 1.6;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.65;
     }
 
-    /* ── DETAILS ── */
-    #details {
-      background: var(--cream);
-      color: var(--text-dark);
-      text-align: center;
-    }
+    /* ─── DETAILS ─── */
+    #details { background: var(--cream); color: var(--text-dark); text-align: center; }
     #details .section-title { color: var(--text-dark); }
-    #details .ornament { color: var(--text-dark); }
+    #details .section-eyebrow { color: var(--burgundy-light); }
 
-    .details-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      margin-top: 2rem;
-    }
+    .details-grid { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
     .detail-block {
       background: var(--cream-dark);
-      border-radius: 8px;
+      border-radius: 6px;
       padding: 1.75rem;
       text-align: left;
+      border-left: 3px solid var(--burgundy);
     }
     .detail-block-label {
       font-family: var(--font-sans);
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       color: var(--burgundy);
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
     }
-    .detail-block-text {
-      font-family: var(--font-body);
-      font-size: 1.05rem;
-      color: var(--text-dark);
-      line-height: 1.65;
-    }
-    .detail-block-contact {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      color: var(--burgundy);
-      margin-top: 0.3rem;
-    }
+    .detail-block-text { font-family: var(--font-body); font-size: 1.05rem; color: var(--text-dark); line-height: 1.65; }
+    .detail-block-contact { font-family: var(--font-display); font-size: 1.1rem; color: var(--burgundy); margin-top: 0.4rem; }
 
-    /* ── RSVP ── */
-    #rsvp {
-      background: var(--burgundy);
-      text-align: center;
-    }
-    .rsvp-intro {
-      color: rgba(255,255,255,0.75);
-      font-size: 1.1rem;
-      line-height: 1.7;
-      margin-bottom: 2.5rem;
-    }
+    /* ─── RSVP ─── */
+    #rsvp { background: var(--burgundy); text-align: center; }
+    .rsvp-intro { color: rgba(255,255,255,0.7); font-size: 1.1rem; line-height: 1.75; margin-bottom: 2.5rem; }
 
-    .rsvp-form {
+    /* ─── RSVP MODAL ─── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 2000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+
+    .modal {
       background: var(--cream);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 2.5rem 2rem;
-      max-width: 480px;
-      margin: 0 auto;
-    }
-    .rsvp-form-title {
-      font-family: var(--font-display);
-      font-size: 1.4rem;
+      max-width: 460px;
+      width: 100%;
       color: var(--text-dark);
-      letter-spacing: 0.08em;
-      margin-bottom: 0.4rem;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.3s;
     }
-    .rsvp-form-subtitle {
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 18px;
+      background: none; border: none;
+      font-size: 1.5rem; cursor: pointer;
+      color: rgba(58,58,58,0.45);
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--burgundy); }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 0.08em;
+      color: var(--text-dark);
+      margin-bottom: 0.25rem;
+    }
+    .modal-sub {
       font-family: var(--font-body);
       font-style: italic;
-      color: rgba(58,58,58,0.55);
       font-size: 0.95rem;
-      margin-bottom: 2rem;
+      color: rgba(58,58,58,0.5);
+      margin-bottom: 1.8rem;
     }
 
-    .form-group {
-      margin-bottom: 1.25rem;
-      text-align: left;
-    }
+    .form-group { margin-bottom: 1.2rem; text-align: left; }
     .form-label {
       display: block;
       font-family: var(--font-sans);
-      font-size: 0.72rem;
+      font-size: 0.65rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(58,58,58,0.6);
-      margin-bottom: 0.5rem;
+      color: rgba(58,58,58,0.55);
+      margin-bottom: 0.45rem;
     }
     .form-input {
       width: 100%;
-      padding: 0.75rem 1rem;
+      padding: 0.7rem 1rem;
       border: 1px solid #d8c8c0;
-      border-radius: 6px;
+      border-radius: 5px;
       background: white;
       font-family: var(--font-body);
       font-size: 1rem;
@@ -624,27 +617,21 @@
     }
     .form-input:focus { border-color: var(--burgundy); }
 
-    .radio-group { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .radio-group { display: flex; gap: 0.7rem; flex-wrap: wrap; }
     .radio-label {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      display: flex; align-items: center; gap: 0.5rem;
       cursor: pointer;
       font-family: var(--font-body);
       font-size: 1rem;
       color: var(--text-dark);
       background: var(--cream-dark);
-      padding: 0.55rem 1.1rem;
+      padding: 0.5rem 1rem;
       border-radius: 30px;
       border: 1px solid #d8c8c0;
-      transition: background 0.2s, border-color 0.2s;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
       user-select: none;
     }
-    .radio-label:has(input:checked) {
-      background: var(--burgundy);
-      color: var(--cream);
-      border-color: var(--burgundy);
-    }
+    .radio-label:has(input:checked) { background: var(--burgundy); color: var(--cream); border-color: var(--burgundy); }
     .radio-label input { display: none; }
 
     .btn-submit {
@@ -655,187 +642,240 @@
       border: none;
       border-radius: 30px;
       font-family: var(--font-sans);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       letter-spacing: 0.25em;
       text-transform: uppercase;
       cursor: pointer;
-      margin-top: 0.5rem;
+      margin-top: 0.75rem;
       transition: background 0.2s, transform 0.15s;
     }
     .btn-submit:hover { background: var(--burgundy-dark); transform: translateY(-1px); }
-    .btn-submit:active { transform: translateY(0); }
+
+    .btn-open-rsvp {
+      display: inline-block;
+      padding: 0.85rem 2.5rem;
+      background: var(--cream);
+      color: var(--burgundy);
+      border: none;
+      border-radius: 30px;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, opacity 0.2s;
+    }
+    .btn-open-rsvp:hover { opacity: 0.85; transform: translateY(-1px); }
 
     .form-success {
       display: none;
       text-align: center;
-      padding: 1.5rem 0 0.5rem;
+      padding: 2rem 0 0.5rem;
       font-family: var(--font-body);
       font-style: italic;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       color: var(--burgundy);
     }
 
-    /* ── CLOSING ── */
+    /* ─── CLOSING ─── */
     #closing {
       background: var(--burgundy);
       text-align: center;
       padding-bottom: 100px;
+      position: relative;
+      overflow: hidden;
+    }
+    .closing-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://static.tildacdn.net/tild3132-6432-4634-b430-363237393231/300592484d1f31590325.png') center/cover no-repeat;
+      opacity: 0.06;
+      pointer-events: none;
     }
     .closing-names {
       font-family: var(--font-display);
-      font-size: clamp(1.8rem, 5vw, 3rem);
-      font-weight: 400;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 500;
       letter-spacing: 0.1em;
       color: var(--cream);
-      line-height: 1;
     }
     .closing-tagline {
       font-family: var(--font-body);
       font-style: italic;
       font-size: 1.1rem;
-      color: rgba(255,255,255,0.5);
-      margin-top: 1rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 0.75rem;
     }
 
-    /* ── SCROLL ANIMATIONS ── */
+    /* ─── SCROLL ANIMATIONS ─── */
     .fade-in-up {
-      opacity: 0;
-      transform: translateY(28px);
+      opacity: 0; transform: translateY(28px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
     .fade-in-up.visible { opacity: 1; transform: none; }
 
-    /* ── RESPONSIVE ── */
+    /* ─── RESPONSIVE ─── */
     @media (max-width: 540px) {
       section { padding: 60px 20px; }
       .schedule-list::before { display: none; }
-      .schedule-item { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .schedule-item { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
       .schedule-time { text-align: left; }
       .schedule-dot { display: none; }
+      .dresscode-cards { flex-direction: column; align-items: center; }
     }
   </style>
 </head>
 <body>
 
-<!-- ── SPLASH ── -->
-<div class="splash" id="splash">
-  <div class="splash-monogram" id="open-btn" role="button" aria-label="Open invitation" tabindex="0">
-    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Decorative ring -->
-      <circle cx="40" cy="40" r="36" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
-      <!-- V -->
-      <text x="18" y="53" font-family="Cinzel, serif" font-size="30" fill="white" opacity="0.9">A</text>
-      <!-- P -->
-      <text x="44" y="53" font-family="Cinzel, serif" font-size="30" fill="white" opacity="0.9">T</text>
-      <!-- ampersand -->
-      <text x="37" y="34" font-family="Cormorant Garamond, serif" font-style="italic" font-size="14" fill="rgba(255,255,255,0.5)" text-anchor="middle">&#38;</text>
-    </svg>
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-panel splash-panel-left"></div>
+  <div class="splash-panel splash-panel-right"></div>
+  <div class="splash-inner">
+    <p class="splash-label">Wedding Day</p>
+    <div class="splash-names">
+      Aryan
+      <span class="splash-and">&amp;</span>
+      Tanisha
+    </div>
+    <p class="splash-date">05 · 07 · 2026 &nbsp;·&nbsp; Arles, France</p>
+    <button class="splash-btn" id="open-btn" aria-label="Open invitation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+        <path d="M4 8l8 8 8-8"/>
+      </svg>
+    </button>
+    <span class="splash-btn-label">Open invitation</span>
   </div>
-
-  <div class="splash-names">
-    Aryan
-    <span class="ampersand">&amp;</span>
-    Tanisha
-  </div>
-  <div class="splash-date">05 · 07 · 2026</div>
-  <p class="splash-cta">Tap to open your invitation</p>
 </div>
 
-<!-- ── AUDIO ── -->
+<!-- AUDIO -->
 <audio id="bg-audio" loop>
   <source src="https://dl.dropboxusercontent.com/scl/fi/v3h8kkw607tx9cb31r02h/Alex-Warren-Ordinary-Official-Video.mp3?rlkey=9taqn02332fuabd4175jdwxdw&st=dkeamyq2" type="audio/mp3" />
 </audio>
-<div id="audio-btn" role="button" aria-label="Toggle music" tabindex="0">
-  <svg id="icon-pause" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <rect x="6" y="5" width="4" height="14" rx="1"/>
-    <rect x="14" y="5" width="4" height="14" rx="1"/>
-  </svg>
-  <svg id="icon-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:none;">
-    <polygon points="5,3 19,12 5,21"/>
-  </svg>
+<button id="audio-btn" aria-label="Toggle music">
+  <svg id="icon-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+  <svg id="icon-play" viewBox="0 0 24 24" style="display:none;"><polygon points="5,3 19,12 5,21"/></svg>
+</button>
+
+<!-- RSVP MODAL -->
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+    <div class="modal-title">RSVP</div>
+    <div class="modal-sub">Please respond before March 20</div>
+    <form id="rsvp-form" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="rsvp-name">Your Name</label>
+        <input class="form-input" type="text" id="rsvp-name" name="name" placeholder="Full name" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Will you come?</label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="attendance" value="yes" required />Yes, I will 🎉</label>
+          <label class="radio-label"><input type="radio" name="attendance" value="no" />Unfortunately, I can't :(</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="rsvp-dietary">Food Intolerances / Dietary Notes</label>
+        <input class="form-input" type="text" id="rsvp-dietary" name="dietary" placeholder="e.g. vegetarian, nut allergy…" />
+      </div>
+      <button type="submit" class="btn-submit">Submit RSVP</button>
+    </form>
+    <div class="form-success" id="form-success">Thank you — we can't wait to celebrate with you! 🥂</div>
+  </div>
 </div>
 
-<!-- ── MAIN ── -->
+<!-- MAIN -->
 <main id="main-content">
 
   <!-- HERO -->
   <section id="hero">
-    <p class="hero-label">Wedding Day</p>
+    <!-- Decorative corner brackets -->
+    <div class="hero-corner hero-corner-tl">
+      <svg width="80" height="80" viewBox="0 0 80 80"><path d="M0 40 L0 0 L40 0" stroke="white" stroke-width="1" fill="none" opacity="0.4"/></svg>
+    </div>
+    <div class="hero-corner hero-corner-tr">
+      <svg width="80" height="80" viewBox="0 0 80 80"><path d="M0 40 L0 0 L40 0" stroke="white" stroke-width="1" fill="none" opacity="0.4"/></svg>
+    </div>
+    <div class="hero-corner hero-corner-bl">
+      <svg width="80" height="80" viewBox="0 0 80 80"><path d="M0 40 L0 0 L40 0" stroke="white" stroke-width="1" fill="none" opacity="0.4"/></svg>
+    </div>
+    <div class="hero-corner hero-corner-br">
+      <svg width="80" height="80" viewBox="0 0 80 80"><path d="M0 40 L0 0 L40 0" stroke="white" stroke-width="1" fill="none" opacity="0.4"/></svg>
+    </div>
+
+    <p class="hero-label">Arles, France</p>
     <h1 class="hero-names">
       Aryan
       <span class="and">&amp;</span>
       Tanisha
     </h1>
-    <p class="hero-date">05 · 07 · 26 &nbsp;·&nbsp; Arles, France</p>
-    <div class="hero-ornament ornament" style="margin-top:2rem;">
-      <span class="ornament-line"></span>
-      <span class="ornament-diamond"></span>
-      <span class="ornament-text">With love &amp; joy</span>
-      <span class="ornament-diamond"></span>
-      <span class="ornament-line"></span>
-    </div>
+    <p class="hero-date">Sunday, July 5, 2026</p>
+    <div class="hero-line"></div>
   </section>
 
   <!-- GREETING -->
   <section id="greeting">
     <div class="section-inner fade-in-up">
-      <h2 class="section-title">A Note From Us</h2>
+      <p class="section-eyebrow">A Note From Us</p>
+      <h2 class="section-title">Dear Friends &amp; Family</h2>
+      <div class="ornament"><div class="ornament-line"></div><div class="ornament-diamond" style="color:rgba(255,255,255,0.3)"></div><div class="ornament-line"></div></div>
       <p class="greeting-text">
-      From chance encounters to unforgettable memories,
-      every step of our journey has led us here.
-
-      Surrounded by the people we love most,
-      we invite you to celebrate the beginning of our forever.
-
-      With love,
-      <strong>Aryan & Tanisha</strong>
-    </p>
+        From chance encounters to unforgettable memories,<br/>
+        every step of our journey has led us here.<br/><br/>
+        Surrounded by the people we love most,<br/>
+        we invite you to celebrate the beginning of our forever.<br/><br/>
+        With all our love,<br/>
+        <strong>Aryan &amp; Tanisha</strong>
+      </p>
     </div>
   </section>
+
+  <!-- WAVE DOWN -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,0 C360,60 1080,60 1440,0 L1440,60 L0,60 Z" fill="#f0e8e2"/>
+    </svg>
+  </div>
 
   <!-- COUNTDOWN -->
   <section id="countdown-section">
     <div class="section-inner fade-in-up">
+      <p class="section-eyebrow">Count With Us</p>
       <h2 class="section-title">The Celebration Begins In</h2>
-      <div class="ornament" style="color:var(--text-dark);">
-        <span class="ornament-line"></span>
-        <span class="ornament-diamond"></span>
-        <span class="ornament-line"></span>
+      <div class="ornament" style="color:var(--text-dark)">
+        <div class="ornament-line dark"></div>
+        <div class="ornament-diamond" style="color:var(--text-dark)"></div>
+        <div class="ornament-line dark"></div>
       </div>
       <div class="countdown-grid" id="countdown">
-        <div class="countdown-item">
-          <span class="countdown-num" id="cd-days">00</span>
-          <span class="countdown-label">Days</span>
-        </div>
+        <div class="countdown-item"><span class="countdown-num" id="cd-days">00</span><span class="countdown-label">Days</span></div>
         <span class="countdown-sep">:</span>
-        <div class="countdown-item">
-          <span class="countdown-num" id="cd-hours">00</span>
-          <span class="countdown-label">Hours</span>
-        </div>
+        <div class="countdown-item"><span class="countdown-num" id="cd-hours">00</span><span class="countdown-label">Hours</span></div>
         <span class="countdown-sep">:</span>
-        <div class="countdown-item">
-          <span class="countdown-num" id="cd-minutes">00</span>
-          <span class="countdown-label">Minutes</span>
-        </div>
+        <div class="countdown-item"><span class="countdown-num" id="cd-minutes">00</span><span class="countdown-label">Minutes</span></div>
         <span class="countdown-sep">:</span>
-        <div class="countdown-item">
-          <span class="countdown-num" id="cd-seconds">00</span>
-          <span class="countdown-label">Seconds</span>
-        </div>
+        <div class="countdown-item"><span class="countdown-num" id="cd-seconds">00</span><span class="countdown-label">Seconds</span></div>
       </div>
     </div>
   </section>
 
+  <!-- WAVE UP -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,60 C360,0 1080,0 1440,60 L1440,0 L0,0 Z" fill="#f0e8e2"/>
+    </svg>
+  </div>
+
   <!-- SCHEDULE -->
   <section id="schedule">
     <div class="section-inner">
+      <p class="section-eyebrow fade-in-up">Sunday, July 5</p>
       <h2 class="section-title fade-in-up">Schedule of Events</h2>
-      <div class="ornament fade-in-up" style="margin-bottom:0.5rem;">
-        <span class="ornament-line"></span>
-        <span class="ornament-diamond"></span>
-        <span class="ornament-text">Sunday, July 5</span>
-        <span class="ornament-diamond"></span>
-        <span class="ornament-line"></span>
+      <div class="ornament fade-in-up">
+        <div class="ornament-line"></div>
+        <div class="ornament-diamond" style="color:rgba(255,255,255,0.3)"></div>
+        <div class="ornament-line"></div>
       </div>
       <ul class="schedule-list">
         <li class="schedule-item">
@@ -843,9 +883,7 @@
           <span class="schedule-dot"></span>
           <div class="schedule-event">
             <div class="schedule-event-name">Wedding Ceremony</div>
-            <div class="schedule-desc">
-            Exchange of vows beneath the summer sky.
-            </div>
+            <div class="schedule-event-desc">Exchange of vows beneath the summer sky</div>
           </div>
         </li>
         <li class="schedule-item">
@@ -853,9 +891,7 @@
           <span class="schedule-dot"></span>
           <div class="schedule-event">
             <div class="schedule-event-name">Cocktail Hour</div>
-            <div class="schedule-desc">
-            Champagne, conversation and golden hour views.
-            </div>
+            <div class="schedule-event-desc">Champagne, conversation and golden hour views</div>
           </div>
         </li>
         <li class="schedule-item">
@@ -863,9 +899,7 @@
           <span class="schedule-dot"></span>
           <div class="schedule-event">
             <div class="schedule-event-name">Dinner</div>
-            <div class="schedule-desc">
-            An evening of dining, toasts and celebration.
-            </div>
+            <div class="schedule-event-desc">An evening of dining, toasts and celebration</div>
           </div>
         </li>
         <li class="schedule-item">
@@ -873,54 +907,73 @@
           <span class="schedule-dot"></span>
           <div class="schedule-event">
             <div class="schedule-event-name">Party</div>
-            <div class="schedule-desc">
-            Dance the night away with us.
-            </div>
+            <div class="schedule-event-desc">Dance the night away with us</div>
           </div>
         </li>
       </ul>
     </div>
   </section>
 
+  <!-- WAVE DOWN -->
+  <div class="wave-divider" style="background:var(--burgundy)">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,0 C360,60 1080,60 1440,0 L1440,60 L0,60 Z" fill="#f0e8e2"/>
+    </svg>
+  </div>
+
   <!-- LOCATION -->
   <section id="location">
     <div class="section-inner fade-in-up">
+      <p class="section-eyebrow">Where We Say I Do</p>
       <h2 class="section-title">Location</h2>
-      <div class="ornament" style="color:var(--text-dark);">
-        <span class="ornament-line"></span>
-        <span class="ornament-diamond"></span>
-        <span class="ornament-line"></span>
+      <div class="ornament" style="color:var(--text-dark)">
+        <div class="ornament-line dark"></div>
+        <div class="ornament-diamond" style="color:var(--text-dark)"></div>
+        <div class="ornament-line dark"></div>
       </div>
-      <div class="venue-placeholder">
-        <span>Chateau de Paon</span>
+      <!-- Replace src with a real venue image to use it -->
+      <div class="venue-frame">
+        <div class="venue-frame-inner">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#66021f" stroke-width="1">
+            <circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+          </svg>
+          <span class="venue-frame-placeholder">Chateau de Paon</span>
+        </div>
       </div>
       <p class="venue-name">Chateau de Paon</p>
-      <p class="venue-address">
-        Petit Chemin de Saint-Gilles<br />
-        13200 Arles, France
-      </p>
-      <a
-        href="https://www.google.com/maps/search/Chateau+de+Paon+Arles+France"
-        target="_blank"
-        rel="noopener"
-        class="map-link"
-      >Open in Maps</a>
+      <p class="venue-address">Petit Chemin de Saint-Gilles<br/>13200 Arles, France</p>
+      <a href="https://www.google.com/maps/search/Chateau+de+Paon+Arles+France" target="_blank" rel="noopener" class="map-link">Open in Maps &rarr;</a>
     </div>
   </section>
+
+  <!-- WAVE UP -->
+  <div class="wave-divider" style="background:var(--burgundy)">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,60 C360,0 1080,0 1440,60 L1440,0 L0,0 Z" fill="#f0e8e2"/>
+    </svg>
+  </div>
 
   <!-- DRESS CODE -->
   <section id="dresscode">
     <div class="section-inner">
+      <p class="section-eyebrow fade-in-up">What to Wear</p>
       <h2 class="section-title fade-in-up">Dress Code</h2>
-      <p class="dresscode-intro fade-in-up">
+      <div class="ornament fade-in-up">
+        <div class="ornament-line"></div>
+        <div class="ornament-diamond" style="color:rgba(255,255,255,0.3)"></div>
+        <div class="ornament-line"></div>
+      </div>
+      <p class="fade-in-up" style="font-size:1.05rem;color:rgba(255,255,255,0.65);max-width:480px;margin:0 auto 2rem;line-height:1.8;">
         We kindly invite you to dress in elegant attire that reflects the style and spirit of our special day.
       </p>
-      <div class="dresscode-cards fade-in-up">
-        <div class="dresscode-card">
+      <div class="dresscode-cards">
+        <div class="dresscode-card fade-in-up">
+          <span class="dresscode-card-icon">🤵</span>
           <div class="dresscode-card-title">Gentlemen</div>
           <div class="dresscode-card-body">Well-tailored suits with classic dress shoes are preferred.</div>
         </div>
-        <div class="dresscode-card">
+        <div class="dresscode-card fade-in-up">
+          <span class="dresscode-card-icon">👗</span>
           <div class="dresscode-card-title">Ladies</div>
           <div class="dresscode-card-body">Formal dresses in elegant, polished styles are encouraged.</div>
         </div>
@@ -928,20 +981,28 @@
     </div>
   </section>
 
+  <!-- WAVE -->
+  <div class="wave-divider" style="background:var(--burgundy)">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,0 C360,60 1080,60 1440,0 L1440,60 L0,60 Z" fill="#f0e8e2"/>
+    </svg>
+  </div>
+
   <!-- DETAILS -->
   <section id="details">
     <div class="section-inner fade-in-up">
+      <p class="section-eyebrow">Good to Know</p>
       <h2 class="section-title">Details</h2>
-      <div class="ornament" style="color:var(--text-dark);">
-        <span class="ornament-line"></span>
-        <span class="ornament-diamond"></span>
-        <span class="ornament-line"></span>
+      <div class="ornament" style="color:var(--text-dark)">
+        <div class="ornament-line dark"></div>
+        <div class="ornament-diamond" style="color:var(--text-dark)"></div>
+        <div class="ornament-line dark"></div>
       </div>
       <div class="details-grid">
         <div class="detail-block">
           <div class="detail-block-label">Questions?</div>
-          <div class="detail-block-text">For additional information or questions, please contact the wedding organizers.</div>
-          <div class="detail-block-contact">Amelia &nbsp;—&nbsp; +31 6845965887</div>
+          <div class="detail-block-text">For additional information, please reach out to the wedding organizers.</div>
+          <div class="detail-block-contact">Amelia &nbsp;·&nbsp; +31 6845965887</div>
         </div>
         <div class="detail-block">
           <div class="detail-block-label">Gifts</div>
@@ -951,71 +1012,51 @@
     </div>
   </section>
 
+  <!-- WAVE -->
+  <div class="wave-divider" style="background:var(--burgundy)">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,60 C360,0 1080,0 1440,60 L1440,0 L0,0 Z" fill="#f0e8e2"/>
+    </svg>
+  </div>
+
   <!-- RSVP -->
   <section id="rsvp">
     <div class="section-inner">
+      <p class="section-eyebrow fade-in-up">Join Us</p>
       <h2 class="section-title fade-in-up">Confirm Your Attendance</h2>
-      <p class="rsvp-intro fade-in-up">
-        To help us prepare for a joyful celebration, kindly confirm your attendance.
-      </p>
-      <div class="rsvp-form fade-in-up">
-        <div class="rsvp-form-title">RSVP</div>
-        <div class="rsvp-form-subtitle">Please respond before March 20</div>
-
-        <form id="rsvp-form" novalidate>
-          <div class="form-group">
-            <label class="form-label" for="rsvp-name">Your Name</label>
-            <input class="form-input" type="text" id="rsvp-name" name="name" placeholder="Full name" required />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Will you come?</label>
-            <div class="radio-group">
-              <label class="radio-label">
-                <input type="radio" name="attendance" value="yes" required />
-                Yes, I will 🎉
-              </label>
-              <label class="radio-label">
-                <input type="radio" name="attendance" value="no" />
-                Unfortunately, I can't :(
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="rsvp-dietary">Food Intolerances or Dietary Notes</label>
-            <input class="form-input" type="text" id="rsvp-dietary" name="dietary" placeholder="e.g. vegetarian, nut allergy…" />
-          </div>
-
-          <button type="submit" class="btn-submit">Submit RSVP</button>
-        </form>
-
-        <div class="form-success" id="form-success">
-          Thank you — we can't wait to celebrate with you! 🥂
-        </div>
+      <div class="ornament fade-in-up">
+        <div class="ornament-line"></div>
+        <div class="ornament-diamond" style="color:rgba(255,255,255,0.3)"></div>
+        <div class="ornament-line"></div>
       </div>
+      <p class="rsvp-intro fade-in-up">
+        To help us prepare for a joyful celebration,<br/>
+        kindly confirm your attendance.
+      </p>
+      <button class="btn-open-rsvp fade-in-up" id="open-rsvp-btn">RSVP Now</button>
     </div>
   </section>
 
   <!-- CLOSING -->
   <section id="closing">
-    <div class="section-inner fade-in-up" style="text-align:center;">
+    <div class="closing-bg"></div>
+    <div class="section-inner fade-in-up" style="position:relative;z-index:1">
       <div class="ornament" style="margin-bottom:2.5rem;">
-        <span class="ornament-line"></span>
-        <span class="ornament-diamond"></span>
-        <span class="ornament-text">Hope to see you there</span>
-        <span class="ornament-diamond"></span>
-        <span class="ornament-line"></span>
+        <div class="ornament-line"></div>
+        <div class="ornament-diamond" style="color:rgba(255,255,255,0.3)"></div>
+        <span style="font-family:var(--font-body);font-style:italic;font-size:1rem;color:rgba(255,255,255,0.45);white-space:nowrap;letter-spacing:0.06em;">Hope to see you there</span>
+        <div class="ornament-diamond" style="color:rgba(255,255,255,0.3)"></div>
+        <div class="ornament-line"></div>
       </div>
       <div class="closing-names">Aryan &amp; Tanisha</div>
-      <p class="closing-tagline">05 · 07 · 2026</p>
+      <p class="closing-tagline">05 · 07 · 2026 &nbsp;·&nbsp; Arles, France</p>
     </div>
   </section>
 
 </main>
 
 <script>
-  /* ── SPLASH / OPEN ── */
+  /* ── OPEN INVITATION ── */
   const splash   = document.getElementById('splash');
   const openBtn  = document.getElementById('open-btn');
   const mainEl   = document.getElementById('main-content');
@@ -1027,7 +1068,7 @@
   function openInvitation() {
     splash.classList.add('hidden');
     mainEl.classList.add('visible');
-    audioEl.muted = false;
+    audioEl.volume = 0.5;
     audioEl.play().then(() => {
       iconPlay.style.display  = 'none';
       iconPause.style.display = 'block';
@@ -1053,14 +1094,15 @@
 
   /* ── COUNTDOWN ── */
   function updateCountdown() {
-    const target = new Date(2026, 6, 5, 16, 0, 0); // July 5 2026, 16:00
+    const target = new Date(2026, 6, 5, 16, 0, 0);
     const now    = new Date();
     const diff   = target - now;
     if (diff <= 0) {
-      document.getElementById('countdown').innerHTML = '<p style="font-family:var(--font-display);font-size:1.5rem;color:var(--burgundy);">The celebration has begun!</p>';
+      document.getElementById('countdown').innerHTML =
+        '<p style="font-family:var(--font-display);font-size:1.5rem;color:var(--burgundy);">The celebration has begun!</p>';
       return;
     }
-    const pad = n => String(Math.floor(n)).padStart(2, '0');
+    const pad = n => String(Math.floor(n)).padStart(2,'0');
     document.getElementById('cd-days').textContent    = pad(diff / 86400000);
     document.getElementById('cd-hours').textContent   = pad((diff % 86400000) / 3600000);
     document.getElementById('cd-minutes').textContent = pad((diff % 3600000) / 60000);
@@ -1077,12 +1119,23 @@
         observer.unobserve(e.target);
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.12 });
 
   document.querySelectorAll('.fade-in-up, .schedule-item').forEach(el => observer.observe(el));
 
-  /* ── RSVP FORM ── */
-  document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+  /* ── RSVP MODAL ── */
+  const overlay     = document.getElementById('modal-overlay');
+  const openRsvpBtn = document.getElementById('open-rsvp-btn');
+  const closeModal  = document.getElementById('modal-close');
+  const rsvpForm    = document.getElementById('rsvp-form');
+  const formSuccess = document.getElementById('form-success');
+
+  openRsvpBtn.addEventListener('click', () => overlay.classList.add('open'));
+  closeModal.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') overlay.classList.remove('open'); });
+
+  rsvpForm.addEventListener('submit', function(e) {
     e.preventDefault();
     const name       = document.getElementById('rsvp-name').value.trim();
     const attendance = this.attendance.value;
@@ -1090,9 +1143,9 @@
       alert('Please fill in your name and attendance choice.');
       return;
     }
-    this.style.display = 'none';
-    document.getElementById('form-success').style.display = 'block';
-    // To connect a real backend, POST to your endpoint here.
+    rsvpForm.style.display = 'none';
+    formSuccess.style.display = 'block';
+    // Connect your backend here: POST { name, attendance, dietary }
   });
 </script>
 </body>
