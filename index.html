@@ -1,18 +1,1062 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Teal Media Works – Wedding Invitation Builder</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>" />
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { background: #EBEBEB; font-family: system-ui, sans-serif; }
-      #root { min-height: 100vh; }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aryan &amp; Tanisha — Wedding Day</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── RESET & BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --burgundy: #66021f;
+      --burgundy-dark: #4a0016;
+      --burgundy-light: #8a1035;
+      --cream: #fffaf8;
+      --cream-dark: #f5ede8;
+      --text-dark: #3a3a3a;
+      --text-light: #fffaf8;
+      --gold: #c9a96e;
+      --font-display: 'Cinzel', serif;
+      --font-body: 'Cormorant Garamond', serif;
+      --font-sans: 'Lato', sans-serif;
+    }
+
+    body {
+      background-color: var(--burgundy);
+      color: var(--text-light);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    /* ── SPLASH / HERO ── */
+    .splash {
+      position: fixed;
+      inset: 0;
+      background: var(--burgundy);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    .splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .splash-monogram {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+      animation: pulse-ring 2.5s ease-in-out infinite;
+      cursor: pointer;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      position: relative;
+    }
+    .splash-monogram::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .splash-monogram:hover { transform: scale(1.05); border-color: rgba(255,255,255,0.6); }
+    .splash-monogram svg { width: 80px; height: 80px; }
+
+    .splash-names {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-align: center;
+      line-height: 1.1;
+      color: var(--cream);
+    }
+    .splash-names .ampersand {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.7em;
+      display: block;
+      margin: 0.2em 0;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.05em;
+    }
+    .splash-date {
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-top: 1.2rem;
+    }
+    .splash-cta {
+      margin-top: 2.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink { 0%,100%{opacity:0.45} 50%{opacity:1} }
+    @keyframes pulse-ring {
+      0%,100%{ box-shadow: 0 0 0 0 rgba(255,255,255,0.15); }
+      50%{ box-shadow: 0 0 0 12px rgba(255,255,255,0); }
+    }
+
+    /* ── AUDIO BUTTON ── */
+    #audio-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--burgundy-dark);
+      border: 1px solid rgba(255,255,255,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 900;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.2s ease;
+    }
+    #audio-btn.visible { opacity: 1; visibility: visible; }
+    #audio-btn:hover { transform: scale(1.08); }
+    #audio-btn svg { width: 22px; height: 22px; fill: var(--cream); }
+
+    /* ── MAIN CONTENT ── */
+    main { opacity: 0; transition: opacity 0.6s ease; }
+    main.visible { opacity: 1; }
+
+    /* ── DIVIDER ORNAMENT ── */
+    .ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 500px;
+    }
+    .ornament-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, currentColor);
+      opacity: 0.3;
+    }
+    .ornament-line:last-child { background: linear-gradient(to left, transparent, currentColor); }
+    .ornament-diamond {
+      width: 6px;
+      height: 6px;
+      background: currentColor;
+      transform: rotate(45deg);
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+    .ornament-text {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      opacity: 0.65;
+      white-space: nowrap;
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 80px 24px; }
+    .section-inner { max-width: 680px; margin: 0 auto; }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    /* ── HERO SECTION ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 24px 80px;
+      position: relative;
+      background: var(--burgundy);
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(138,16,53,0.4) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.3s;
+    }
+    .hero-names {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 12vw, 8rem);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      line-height: 0.9;
+      color: var(--cream);
+      opacity: 0;
+      animation: fadeUp 1.2s ease forwards 0.6s;
+    }
+    .hero-names .and {
+      display: block;
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.35em;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.1em;
+      margin: 0.4em 0;
+      font-weight: 300;
+    }
+    .hero-date {
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-top: 2rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.9s;
+    }
+    .hero-ornament {
+      margin: 2rem auto 0;
+      color: var(--cream);
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1.1s;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── GREETING ── */
+    #greeting {
+      background: var(--burgundy);
+      text-align: center;
+      padding-top: 0;
+    }
+    .greeting-text {
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      line-height: 1.8;
+      color: rgba(255,255,255,0.82);
+      font-weight: 300;
+    }
+    .greeting-text strong {
+      font-family: var(--font-display);
+      font-size: 1.15em;
+      font-weight: 400;
+      color: var(--cream);
+    }
+
+    /* ── COUNTDOWN ── */
+    #countdown-section {
+      background: var(--cream);
+      color: var(--text-dark);
+      text-align: center;
+    }
+    #countdown-section .section-title { color: var(--text-dark); }
+    #countdown-section .ornament { color: var(--text-dark); }
+
+    .countdown-grid {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 0;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .countdown-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 80px;
+    }
+    .countdown-num {
+      font-family: var(--font-body);
+      font-size: clamp(2.8rem, 8vw, 5rem);
+      font-weight: 300;
+      color: var(--burgundy);
+      line-height: 1;
+    }
+    .countdown-label {
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(58,58,58,0.55);
+      margin-top: 0.4rem;
+    }
+    .countdown-sep {
+      font-family: var(--font-body);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      color: var(--burgundy);
+      opacity: 0.3;
+      padding: 0 4px;
+      padding-bottom: 1.8rem;
+      align-self: flex-end;
+    }
+
+    /* ── SCHEDULE ── */
+    #schedule {
+      background: var(--burgundy);
+      text-align: center;
+    }
+    .schedule-list {
+      list-style: none;
+      margin-top: 2.5rem;
+      position: relative;
+      padding: 0;
+    }
+    .schedule-list::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 12px;
+      bottom: 12px;
+      width: 1px;
+      background: rgba(255,255,255,0.18);
+      transform: translateX(-50%);
+    }
+    .schedule-item {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .schedule-item.visible { opacity: 1; transform: none; }
+    .schedule-item:last-child { margin-bottom: 0; }
+
+    .schedule-time {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--cream);
+      min-width: 80px;
+      text-align: right;
+    }
+    .schedule-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--cream);
+      border-radius: 50%;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      opacity: 0.7;
+    }
+    .schedule-event {
+      text-align: left;
+      min-width: 140px;
+    }
+    .schedule-event-name {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.3;
+    }
+
+    /* ── LOCATION ── */
+    #location {
+      background: var(--cream);
+      color: var(--text-dark);
+      text-align: center;
+    }
+    #location .section-title { color: var(--text-dark); }
+    #location .ornament { color: var(--text-dark); }
+
+    .venue-name {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 400;
+      color: var(--burgundy);
+      margin: 1.5rem 0 0.5rem;
+    }
+    .venue-address {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      color: rgba(58,58,58,0.65);
+      line-height: 1.6;
+    }
+    .map-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--burgundy);
+      text-decoration: none;
+      border-bottom: 1px solid var(--burgundy);
+      padding-bottom: 2px;
+      transition: opacity 0.2s;
+    }
+    .map-link:hover { opacity: 0.6; }
+
+    .venue-img {
+      width: 100%;
+      max-width: 480px;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-top: 2rem;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      background: var(--cream-dark);
+    }
+    /* Placeholder styling when no real image */
+    .venue-placeholder {
+      width: 100%;
+      max-width: 480px;
+      height: 220px;
+      background: linear-gradient(135deg, var(--cream-dark) 0%, #e8d5ce 100%);
+      border-radius: 4px;
+      margin: 2rem auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .venue-placeholder span {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--burgundy);
+      opacity: 0.5;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── DRESS CODE ── */
+    #dresscode {
+      background: var(--burgundy);
+      text-align: center;
+    }
+    .dresscode-intro {
+      font-size: 1.1rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.78);
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+    }
+    .dresscode-cards {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .dresscode-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 2rem 1.5rem;
+      max-width: 220px;
+      text-align: left;
+      flex: 1;
+      min-width: 180px;
+    }
+    .dresscode-card-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      color: var(--cream);
+      margin-bottom: 0.75rem;
+    }
+    .dresscode-card-body {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.6;
+    }
+
+    /* ── DETAILS ── */
+    #details {
+      background: var(--cream);
+      color: var(--text-dark);
+      text-align: center;
+    }
+    #details .section-title { color: var(--text-dark); }
+    #details .ornament { color: var(--text-dark); }
+
+    .details-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .detail-block {
+      background: var(--cream-dark);
+      border-radius: 8px;
+      padding: 1.75rem;
+      text-align: left;
+    }
+    .detail-block-label {
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--burgundy);
+      margin-bottom: 0.6rem;
+    }
+    .detail-block-text {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      color: var(--text-dark);
+      line-height: 1.65;
+    }
+    .detail-block-contact {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      color: var(--burgundy);
+      margin-top: 0.3rem;
+    }
+
+    /* ── RSVP ── */
+    #rsvp {
+      background: var(--burgundy);
+      text-align: center;
+    }
+    .rsvp-intro {
+      color: rgba(255,255,255,0.75);
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .rsvp-form {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .rsvp-form-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--text-dark);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+    .rsvp-form-subtitle {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: rgba(58,58,58,0.55);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+    .form-label {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(58,58,58,0.6);
+      margin-bottom: 0.5rem;
+    }
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #d8c8c0;
+      border-radius: 6px;
+      background: white;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--text-dark);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { border-color: var(--burgundy); }
+
+    .radio-group { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--text-dark);
+      background: var(--cream-dark);
+      padding: 0.55rem 1.1rem;
+      border-radius: 30px;
+      border: 1px solid #d8c8c0;
+      transition: background 0.2s, border-color 0.2s;
+      user-select: none;
+    }
+    .radio-label:has(input:checked) {
+      background: var(--burgundy);
+      color: var(--cream);
+      border-color: var(--burgundy);
+    }
+    .radio-label input { display: none; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--burgundy);
+      color: var(--cream);
+      border: none;
+      border-radius: 30px;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-submit:hover { background: var(--burgundy-dark); transform: translateY(-1px); }
+    .btn-submit:active { transform: translateY(0); }
+
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 1.5rem 0 0.5rem;
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--burgundy);
+    }
+
+    /* ── CLOSING ── */
+    #closing {
+      background: var(--burgundy);
+      text-align: center;
+      padding-bottom: 100px;
+    }
+    .closing-names {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--cream);
+      line-height: 1;
+    }
+    .closing-tagline {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 1rem;
+    }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in-up.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 540px) {
+      section { padding: 60px 20px; }
+      .schedule-list::before { display: none; }
+      .schedule-item { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .schedule-time { text-align: left; }
+      .schedule-dot { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── SPLASH ── -->
+<div class="splash" id="splash">
+  <div class="splash-monogram" id="open-btn" role="button" aria-label="Open invitation" tabindex="0">
+    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Decorative ring -->
+      <circle cx="40" cy="40" r="36" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
+      <!-- V -->
+      <text x="18" y="53" font-family="Cinzel, serif" font-size="30" fill="white" opacity="0.9">A</text>
+      <!-- P -->
+      <text x="44" y="53" font-family="Cinzel, serif" font-size="30" fill="white" opacity="0.9">T</text>
+      <!-- ampersand -->
+      <text x="37" y="34" font-family="Cormorant Garamond, serif" font-style="italic" font-size="14" fill="rgba(255,255,255,0.5)" text-anchor="middle">&#38;</text>
+    </svg>
+  </div>
+
+  <div class="splash-names">
+    Aryan
+    <span class="ampersand">&amp;</span>
+    Tanisha
+  </div>
+  <div class="splash-date">05 · 07 · 2026</div>
+  <p class="splash-cta">Tap to open your invitation</p>
+</div>
+
+<!-- ── AUDIO ── -->
+<audio id="bg-audio" loop>
+  <source src="https://dl.dropboxusercontent.com/scl/fi/v3h8kkw607tx9cb31r02h/Alex-Warren-Ordinary-Official-Video.mp3?rlkey=9taqn02332fuabd4175jdwxdw&st=dkeamyq2" type="audio/mp3" />
+</audio>
+<div id="audio-btn" role="button" aria-label="Toggle music" tabindex="0">
+  <svg id="icon-pause" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="5" width="4" height="14" rx="1"/>
+    <rect x="14" y="5" width="4" height="14" rx="1"/>
+  </svg>
+  <svg id="icon-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+    <polygon points="5,3 19,12 5,21"/>
+  </svg>
+</div>
+
+<!-- ── MAIN ── -->
+<main id="main-content">
+
+  <!-- HERO -->
+  <section id="hero">
+    <p class="hero-label">Wedding Day</p>
+    <h1 class="hero-names">
+      Aryan
+      <span class="and">&amp;</span>
+      Tanisha
+    </h1>
+    <p class="hero-date">05 · 07 · 26 &nbsp;·&nbsp; Arles, France</p>
+    <div class="hero-ornament ornament" style="margin-top:2rem;">
+      <span class="ornament-line"></span>
+      <span class="ornament-diamond"></span>
+      <span class="ornament-text">With love &amp; joy</span>
+      <span class="ornament-diamond"></span>
+      <span class="ornament-line"></span>
+    </div>
+  </section>
+
+  <!-- GREETING -->
+  <section id="greeting">
+    <div class="section-inner fade-in-up">
+      <h2 class="section-title">Dear Friends &amp; Family,</h2>
+      <p class="greeting-text">
+        As we get ready to say "I do," we feel grateful for the wonderful people in our lives.<br /><br />
+        Your support means the world to us, and we would be <strong>honored to have you with us</strong> as we begin our life together.
+      </p>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section id="countdown-section">
+    <div class="section-inner fade-in-up">
+      <h2 class="section-title">The Celebration Begins In</h2>
+      <div class="ornament" style="color:var(--text-dark);">
+        <span class="ornament-line"></span>
+        <span class="ornament-diamond"></span>
+        <span class="ornament-line"></span>
+      </div>
+      <div class="countdown-grid" id="countdown">
+        <div class="countdown-item">
+          <span class="countdown-num" id="cd-days">00</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-item">
+          <span class="countdown-num" id="cd-hours">00</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-item">
+          <span class="countdown-num" id="cd-minutes">00</span>
+          <span class="countdown-label">Minutes</span>
+        </div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-item">
+          <span class="countdown-num" id="cd-seconds">00</span>
+          <span class="countdown-label">Seconds</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE -->
+  <section id="schedule">
+    <div class="section-inner">
+      <h2 class="section-title fade-in-up">Schedule of Events</h2>
+      <div class="ornament fade-in-up" style="margin-bottom:0.5rem;">
+        <span class="ornament-line"></span>
+        <span class="ornament-diamond"></span>
+        <span class="ornament-text">Sunday, July 5</span>
+        <span class="ornament-diamond"></span>
+        <span class="ornament-line"></span>
+      </div>
+      <ul class="schedule-list">
+        <li class="schedule-item">
+          <span class="schedule-time">16:00</span>
+          <span class="schedule-dot"></span>
+          <div class="schedule-event">
+            <div class="schedule-event-name">Wedding Ceremony</div>
+          </div>
+        </li>
+        <li class="schedule-item">
+          <span class="schedule-time">17:00</span>
+          <span class="schedule-dot"></span>
+          <div class="schedule-event">
+            <div class="schedule-event-name">Cocktail Hour</div>
+          </div>
+        </li>
+        <li class="schedule-item">
+          <span class="schedule-time">19:00</span>
+          <span class="schedule-dot"></span>
+          <div class="schedule-event">
+            <div class="schedule-event-name">Dinner</div>
+          </div>
+        </li>
+        <li class="schedule-item">
+          <span class="schedule-time">20:00</span>
+          <span class="schedule-dot"></span>
+          <div class="schedule-event">
+            <div class="schedule-event-name">Party</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section id="location">
+    <div class="section-inner fade-in-up">
+      <h2 class="section-title">Location</h2>
+      <div class="ornament" style="color:var(--text-dark);">
+        <span class="ornament-line"></span>
+        <span class="ornament-diamond"></span>
+        <span class="ornament-line"></span>
+      </div>
+      <div class="venue-placeholder">
+        <span>Chateau de Paon</span>
+      </div>
+      <p class="venue-name">Chateau de Paon</p>
+      <p class="venue-address">
+        Petit Chemin de Saint-Gilles<br />
+        13200 Arles, France
+      </p>
+      <a
+        href="https://www.google.com/maps/search/Chateau+de+Paon+Arles+France"
+        target="_blank"
+        rel="noopener"
+        class="map-link"
+      >Open in Maps</a>
+    </div>
+  </section>
+
+  <!-- DRESS CODE -->
+  <section id="dresscode">
+    <div class="section-inner">
+      <h2 class="section-title fade-in-up">Dress Code</h2>
+      <p class="dresscode-intro fade-in-up">
+        We kindly invite you to dress in elegant attire that reflects the style and spirit of our special day.
+      </p>
+      <div class="dresscode-cards fade-in-up">
+        <div class="dresscode-card">
+          <div class="dresscode-card-title">Gentlemen</div>
+          <div class="dresscode-card-body">Well-tailored suits with classic dress shoes are preferred.</div>
+        </div>
+        <div class="dresscode-card">
+          <div class="dresscode-card-title">Ladies</div>
+          <div class="dresscode-card-body">Formal dresses in elegant, polished styles are encouraged.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DETAILS -->
+  <section id="details">
+    <div class="section-inner fade-in-up">
+      <h2 class="section-title">Details</h2>
+      <div class="ornament" style="color:var(--text-dark);">
+        <span class="ornament-line"></span>
+        <span class="ornament-diamond"></span>
+        <span class="ornament-line"></span>
+      </div>
+      <div class="details-grid">
+        <div class="detail-block">
+          <div class="detail-block-label">Questions?</div>
+          <div class="detail-block-text">For additional information or questions, please contact the wedding organizers.</div>
+          <div class="detail-block-contact">Amelia &nbsp;—&nbsp; +31 6845965887</div>
+        </div>
+        <div class="detail-block">
+          <div class="detail-block-label">Gifts</div>
+          <div class="detail-block-text">Your presence is the greatest gift to us. However, if you wish to honour us with a present, a contribution toward our future would be sincerely appreciated.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP -->
+  <section id="rsvp">
+    <div class="section-inner">
+      <h2 class="section-title fade-in-up">Confirm Your Attendance</h2>
+      <p class="rsvp-intro fade-in-up">
+        To help us prepare for a joyful celebration, kindly confirm your attendance.
+      </p>
+      <div class="rsvp-form fade-in-up">
+        <div class="rsvp-form-title">RSVP</div>
+        <div class="rsvp-form-subtitle">Please respond before March 20</div>
+
+        <form id="rsvp-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="rsvp-name">Your Name</label>
+            <input class="form-input" type="text" id="rsvp-name" name="name" placeholder="Full name" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Will you come?</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="attendance" value="yes" required />
+                Yes, I will 🎉
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="attendance" value="no" />
+                Unfortunately, I can't :(
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="rsvp-dietary">Food Intolerances or Dietary Notes</label>
+            <input class="form-input" type="text" id="rsvp-dietary" name="dietary" placeholder="e.g. vegetarian, nut allergy…" />
+          </div>
+
+          <button type="submit" class="btn-submit">Submit RSVP</button>
+        </form>
+
+        <div class="form-success" id="form-success">
+          Thank you — we can't wait to celebrate with you! 🥂
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section id="closing">
+    <div class="section-inner fade-in-up" style="text-align:center;">
+      <div class="ornament" style="margin-bottom:2.5rem;">
+        <span class="ornament-line"></span>
+        <span class="ornament-diamond"></span>
+        <span class="ornament-text">Hope to see you there</span>
+        <span class="ornament-diamond"></span>
+        <span class="ornament-line"></span>
+      </div>
+      <div class="closing-names">Aryan &amp; Tanisha</div>
+      <p class="closing-tagline">05 · 07 · 2026</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  /* ── SPLASH / OPEN ── */
+  const splash   = document.getElementById('splash');
+  const openBtn  = document.getElementById('open-btn');
+  const mainEl   = document.getElementById('main-content');
+  const audioEl  = document.getElementById('bg-audio');
+  const audioBtn = document.getElementById('audio-btn');
+  const iconPlay  = document.getElementById('icon-play');
+  const iconPause = document.getElementById('icon-pause');
+
+  function openInvitation() {
+    splash.classList.add('hidden');
+    mainEl.classList.add('visible');
+    audioEl.muted = false;
+    audioEl.play().then(() => {
+      iconPlay.style.display  = 'none';
+      iconPause.style.display = 'block';
+    }).catch(() => {});
+    audioBtn.classList.add('visible');
+  }
+
+  openBtn.addEventListener('click', openInvitation);
+  openBtn.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openInvitation(); });
+
+  /* ── AUDIO TOGGLE ── */
+  audioBtn.addEventListener('click', () => {
+    if (audioEl.paused) {
+      audioEl.play();
+      iconPlay.style.display  = 'none';
+      iconPause.style.display = 'block';
+    } else {
+      audioEl.pause();
+      iconPlay.style.display  = 'block';
+      iconPause.style.display = 'none';
+    }
+  });
+
+  /* ── COUNTDOWN ── */
+  function updateCountdown() {
+    const target = new Date(2026, 6, 5, 16, 0, 0); // July 5 2026, 16:00
+    const now    = new Date();
+    const diff   = target - now;
+    if (diff <= 0) {
+      document.getElementById('countdown').innerHTML = '<p style="font-family:var(--font-display);font-size:1.5rem;color:var(--burgundy);">The celebration has begun!</p>';
+      return;
+    }
+    const pad = n => String(Math.floor(n)).padStart(2, '0');
+    document.getElementById('cd-days').textContent    = pad(diff / 86400000);
+    document.getElementById('cd-hours').textContent   = pad((diff % 86400000) / 3600000);
+    document.getElementById('cd-minutes').textContent = pad((diff % 3600000) / 60000);
+    document.getElementById('cd-seconds').textContent = pad((diff % 60000) / 1000);
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  /* ── SCROLL ANIMATIONS ── */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in-up, .schedule-item').forEach(el => observer.observe(el));
+
+  /* ── RSVP FORM ── */
+  document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name       = document.getElementById('rsvp-name').value.trim();
+    const attendance = this.attendance.value;
+    if (!name || !attendance) {
+      alert('Please fill in your name and attendance choice.');
+      return;
+    }
+    this.style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+    // To connect a real backend, POST to your endpoint here.
+  });
+</script>
+</body>
 </html>
