@@ -79,8 +79,8 @@ body{background:var(--white);color:var(--ink-mid);font-family:var(--fs);overflow
   width:100%;height:100%;
   object-fit:cover;object-position:center;
   z-index:0;
-  opacity:.18;   /* adjust to taste — keeps text readable */
-  display:none;  /* set to block once you add src          */
+  opacity:.22;   /* adjust to taste — keeps text readable */
+  display:block;  /* venue photo active */
 }
 
 /* ── Gold corner ornaments ── */
@@ -379,8 +379,8 @@ body{background:var(--white);color:var(--ink-mid);font-family:var(--fs);overflow
 <!-- ══════════ HERO ══════════ -->
 <section id="hero" role="banner">
 
-  <!-- Optional venue photo: set display:block and add src="" below -->
-  <img id="hero-bg" src="" alt="" aria-hidden="true"/>
+  <!-- Venue background photo from GitHub repo -->
+  <img id="hero-bg" src="https://raw.githubusercontent.com/tealmediaworks/digitalinvitations/main/img/Your%20paragraph%20text.png" alt="" aria-hidden="true"/>
 
   <!-- Water shimmer canvas -->
   <canvas id="wc" aria-hidden="true"></canvas>
